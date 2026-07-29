@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NEON-NEXUS — Digital Experience</title>
+<meta name="description" content="NEON-NEXUS — interfaces engineered for speed, built without compromise." />
+<meta name="theme-color" content="#050505" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ================================================================== */
+/* design tokens                                                      */
+/* ================================================================== */
+:root{
+  --bg:#050505;
+  --text:#e0e0e0;
+  --accent-1:#00ff41;
+  --accent-2:#ff003c;
+  --surface:#111111;
+  --line:#333333;
+  --header-h:4.5rem;
+}
+
+/* ================================================================== */
+/* reset + adaptive rem grid (base 16px @ 1920 / 1440 / 1024 / 640)    */
+/* ================================================================== */
+*{ margin:0; padding:0; box-sizing:border-box }
+
+html{ font-size:16px; -webkit-text-size-adjust:100% }
+@media (max-width:1920px){ html{ font-size:0.833333vw } }   /* 16 * 100 / 1920 */
+@media (max-width:1440px){ html{ font-size:1.111111vw } }   /* 16 * 100 / 1440 */
+@media (max-width:1024px){ html{ font-size:1.5625vw } }     /* 16 * 100 / 1024 */
+@media (max-width:640px){  html{ font-size:2.5vw } }        /* 16 * 100 / 640  */
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Space Grotesk', sans-serif;
+  font-weight:400;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+body.is-booting{ overflow:hidden; height:100vh }
+
+ul{ list-style:none }
+img{ display:block; max-width:100% }
+::selection{ background:var(--accent-1); color:var(--bg) }
+:focus-visible{ outline:2px solid var(--accent-1); outline-offset:3px }
+
+/* ================================================================== */
+/* interactive canvas background                                      */
+/* ================================================================== */
+#bg{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  display:block;
+  pointer-events:none;
+}
+
+/* ================================================================== */
+/* glitch text hover — every <a> and <button>                          */
+/* ================================================================== */
+a, button{
+  position:relative;
+  display:inline-block;
+  font:inherit;
+  color:inherit;
+  background:none;
+  border:none;
+  text-decoration:none;
+  cursor:pointer;
+  isolation:isolate;
+}
+
+a[data-text]::before, a[data-text]::after,
+button[data-text]::before, button[data-text]::after{
+  content:attr(data-text);
+  position:absolute;
+  inset:0;
+  padding:inherit;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  z-index:-1;
+}
+
+a[data-text]:hover::before, a[data-text]:focus-visible::before,
+button[data-text]:hover::before, button[data-text]:focus-visible::before{
+  opacity:1;
+  color:var(--accent-1);
+  text-shadow:0.0625rem 0 var(--accent-1);
+  animation:glitch-shard-a 0.55s steps(2,end) infinite;
+}
+
+a[data-text]:hover::after, a[data-text]:focus-visible::after,
+button[data-text]:hover::after, button[data-text]:focus-visible::after{
+  opacity:1;
+  color:var(--accent-2);
+  text-shadow:-0.0625rem 0 var(--accent-2);
+  animation:glitch-shard-b 0.55s steps(2,end) infinite reverse;
+}
+
+@keyframes glitch-shard-a{
+  0%   { clip-path:inset(18% 0 62% 0); transform:translate(-3px,-1px) }
+  20%  { clip-path:inset(66% 0 8% 0);  transform:translate(3px,1px) }
+  40%  { clip-path:inset(41% 0 39% 0); transform:translate(-4px,0) }
+  60%  { clip-path:inset(8% 0 79% 0);  transform:translate(2px,-2px) }
+  80%  { clip-path:inset(81% 0 3% 0);  transform:translate(-2px,2px) }
+  100% { clip-path:inset(31% 0 54% 0); transform:translate(3px,0) }
+}
+
+@keyframes glitch-shard-b{
+  0%   { clip-path:inset(72% 0 12% 0); transform:translate(3px,1px) }
+  20%  { clip-path:inset(12% 0 70% 0); transform:translate(-3px,-1px) }
+  40%  { clip-path:inset(48% 0 33% 0); transform:translate(4px,0) }
+  60%  { clip-path:inset(86% 0 2% 0);  transform:translate(-2px,2px) }
+  80%  { clip-path:inset(24% 0 60% 0); transform:translate(2px,-2px) }
+  100% { clip-path:inset(58% 0 26% 0); transform:translate(-3px,0) }
+}
+
+/* ================================================================== */
+/* boot sequence loader                                               */
+/* ================================================================== */
+#boot{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  pointer-events:auto;
+}
+
+.boot-half{
+  position:absolute;
+  left:0;
+  width:100%;
+  height:50.05%;
+  background:var(--bg);
+  transition:transform 1s cubic-bezier(0.76,0,0.24,1);
+  will-change:transform;
+}
+.boot-half.top{ top:0; border-bottom:1px solid var(--line) }
+.boot-half.bottom{ bottom:0; border-top:1px solid var(--line) }
+
+#boot.split .boot-half.top{ transform:translateY(-100%) }
+#boot.split .boot-half.bottom{ transform:translateY(100%) }
+
+.boot-console{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1.25rem;
+  opacity:1;
+  transition:opacity 0.25s linear;
+}
+#boot.split .boot-console{ opacity:0 }
+
+.boot-hex{
+  display:flex;
+  gap:1.5rem;
+  font-size:0.875rem;
+  font-weight:400;
+  letter-spacing:0.18em;
+  color:var(--accent-1);
+  font-variant-numeric:tabular-nums;
+}
+.boot-hex span{ min-width:6.5rem; text-align:center }
+
+.boot-status{
+  font-size:1.125rem;
+  font-weight:700;
+  letter-spacing:0.32em;
+  text-transform:uppercase;
+  color:var(--text);
+  min-height:1.5rem;
+  text-align:center;
+}
+
+.boot-bar{
+  width:min(26rem,70vw);
+  height:1px;
+  background:var(--line);
+  position:relative;
+  overflow:hidden;
+}
+.boot-bar-fill{
+  position:absolute;
+  inset:0 auto 0 0;
+  width:0%;
+  background:var(--accent-1);
+}
+
+.boot-pct{
+  font-size:0.75rem;
+  letter-spacing:0.3em;
+  color:#666;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ================================================================== */
+/* header                                                             */
+/* ================================================================== */
+.site-header{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:100;
+  height:var(--header-h);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 2.5rem;
+  background:rgba(5,5,5,0.55);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+
+.logo{
+  font-size:1rem;
+  font-weight:700;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--text);
+}
+
+.magnetic-wrap{ position:relative; display:inline-block; will-change:transform }
+
+.btn-initialize{
+  padding:0.75rem 1.75rem;
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--text);
+  font-size:0.75rem;
+  font-weight:700;
+  letter-spacing:0.24em;
+  text-transform:uppercase;
+  transition:border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+.btn-initialize:hover{
+  border-color:var(--accent-1);
+  background:rgba(0,255,65,0.06);
+}
+
+/* ================================================================== */
+/* hero                                                               */
+/* ================================================================== */
+main{ position:relative; z-index:1 }
+
+.hero{
+  min-height:100vh;
+  padding:calc(var(--header-h) + 6rem) 2.5rem 5rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:4rem;
+}
+
+.hero-eyebrow{
+  font-size:0.75rem;
+  font-weight:600;
+  letter-spacing:0.34em;
+  text-transform:uppercase;
+  color:var(--accent-1);
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.revealed .hero-eyebrow{ opacity:1; transform:translateY(0) }
+
+.hero-title{
+  font-size:8.5rem;
+  font-weight:700;
+  line-height:0.88;
+  letter-spacing:-0.045em;
+  text-transform:uppercase;
+  color:var(--text);
+}
+
+.hero-title .char{
+  display:inline-block;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.revealed .hero-title .char{ opacity:1; transform:translateY(0) }
+
+/* --- bento grid ------------------------------------------------- */
+.bento{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.5rem;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  transition-delay:0.55s;
+}
+.revealed .bento{ opacity:1; transform:translateY(0) }
+
+.bento-card{
+  border:1px solid var(--line);
+  background:rgba(17,17,17,0.55);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  padding:1.75rem;
+  min-height:15rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:2rem;
+  transition:border-color 0.35s ease, background-color 0.35s ease;
+}
+.bento-card:hover{ border-color:var(--accent-1); background:rgba(17,17,17,0.85) }
+.bento-card.wide{ grid-column:span 2 }
+
+.card-index{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:0.6875rem;
+  font-weight:600;
+  letter-spacing:0.26em;
+  text-transform:uppercase;
+  color:#666;
+}
+.card-index .tag{ color:var(--accent-1) }
+
+.card-body h2{
+  font-size:1.75rem;
+  font-weight:600;
+  line-height:1.15;
+  letter-spacing:-0.02em;
+  color:var(--text);
+}
+.card-body p{
+  margin-top:0.75rem;
+  font-size:0.9375rem;
+  line-height:1.6;
+  color:#9a9a9a;
+  max-width:26ch;
+}
+
+.card-metric{
+  font-size:4rem;
+  font-weight:700;
+  line-height:0.9;
+  letter-spacing:-0.04em;
+  color:var(--text);
+  font-variant-numeric:tabular-nums;
+}
+.card-metric .unit{ color:var(--accent-1); font-size:1.5rem; letter-spacing:0 }
+
+.card-link{
+  font-size:0.75rem;
+  font-weight:700;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--text);
+  align-self:flex-start;
+}
+
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:0.625rem;
+  font-size:0.75rem;
+  font-weight:600;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:#9a9a9a;
+}
+.status-pill::before{
+  content:'';
+  width:0.5rem;
+  height:0.5rem;
+  border-radius:50%;
+  background:var(--accent-1);
+  box-shadow:0 0 0.75rem var(--accent-1);
+  animation:status-blink 1.6s ease-in-out infinite;
+}
+@keyframes status-blink{
+  0%,100%{ opacity:0.35; transform:scale(0.85) }
+  50%    { opacity:1;    transform:scale(1.1) }
+}
+
+/* ================================================================== */
+/* marquee                                                            */
+/* ================================================================== */
+.marquee-section{
+  padding:6rem 0 10rem;
+  overflow:hidden;
+}
+
+.marquee{
+  position:relative;
+  width:110vw;
+  margin-left:-5vw;
+  overflow:hidden;
+  transform:rotate(-2deg);
+  background:var(--surface);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:1.25rem 0;
+}
+
+.marquee-track{
+  display:flex;
+  width:max-content;
+  animation:marquee-scroll 24s linear infinite;
+}
+
+.marquee-item{
+  flex:none;
+  padding-right:2.5rem;
+  white-space:nowrap;
+  font-size:2.5rem;
+  font-weight:700;
+  letter-spacing:0.02em;
+  text-transform:uppercase;
+  color:var(--text);
+}
+.marquee-item:nth-child(even){
+  color:transparent;
+  -webkit-text-stroke:1px var(--accent-1);
+}
+
+@keyframes marquee-scroll{
+  from{ transform:translateX(0) }
+  to  { transform:translateX(-50%) }
+}
+
+/* ================================================================== */
+/* small screens                                                      */
+/* ================================================================== */
+@media (max-width:640px){
+  .site-header{ padding:0 1.25rem }
+  .hero{ padding:calc(var(--header-h) + 4rem) 1.25rem 3rem; gap:3rem }
+  .hero-title{ font-size:4.5rem; letter-spacing:-0.03em }
+  .bento{ grid-template-columns:1fr }
+  .bento-card.wide{ grid-column:span 1 }
+  .bento-card{ min-height:11rem }
+  .marquee-item{ font-size:1.75rem }
+}
+</style>
+</head>
+<body class="is-booting">
+
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<!-- ================================================================ -->
+<!-- boot sequence loader                                             -->
+<!-- ================================================================ -->
+<div id="boot" role="status" aria-live="polite">
+  <div class="boot-half top"></div>
+  <div class="boot-half bottom"></div>
+  <div class="boot-console">
+    <div class="boot-hex" id="bootHex"><span>0x000000</span><span>0x000000</span><span>0x000000</span></div>
+    <div class="boot-status" id="bootStatus">SYSTEM BOOT...</div>
+    <div class="boot-bar"><div class="boot-bar-fill" id="bootBar"></div></div>
+    <div class="boot-pct" id="bootPct">000</div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- header                                                           -->
+<!-- ================================================================ -->
+<header class="site-header">
+  <a href="#" class="logo" data-text="N-NEXUS">N-NEXUS</a>
+  <span class="magnetic-wrap" id="magnetic">
+    <button type="button" class="btn-initialize" data-text="INITIALIZE">INITIALIZE</button>
+  </span>
+</header>
+
+<!-- ================================================================ -->
+<!-- hero                                                             -->
+<!-- ================================================================ -->
+<main>
+  <section class="hero" id="hero">
+    <p class="hero-eyebrow">[ NEON-NEXUS // DIGITAL EXPERIENCE ]</p>
+
+    <h1 class="hero-title" id="heroTitle">BEYOND THE PIXEL.</h1>
+
+    <div class="bento">
+      <article class="bento-card wide">
+        <div class="card-index"><span class="tag">[01]</span><span>SELECTED WORK</span></div>
+        <div class="card-body">
+          <h2>Interfaces engineered for speed, built without compromise.</h2>
+          <p>Real-time systems, WebGL pipelines and motion design shipped end to end.</p>
+        </div>
+        <a href="#" class="card-link" data-text="VIEW ARCHIVE →">VIEW ARCHIVE →</a>
+      </article>
+
+      <article class="bento-card">
+        <div class="card-index"><span class="tag">[02]</span><span>LATENCY</span></div>
+        <div class="card-body">
+          <p class="card-metric">08<span class="unit">MS</span></p>
+        </div>
+        <p class="status-pill">AVG FRAME BUDGET</p>
+      </article>
+
+      <article class="bento-card">
+        <div class="card-index"><span class="tag">[03]</span><span>STATUS</span></div>
+        <div class="card-body">
+          <p class="card-metric">OPEN</p>
+        </div>
+        <p class="status-pill">Q3 2026 AVAILABILITY</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- marquee                                                        -->
+  <!-- ============================================================== -->
+  <section class="marquee-section">
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span class="marquee-item">/// HIGH PERFORMANCE /// NO LIMITS ///</span>
+        <span class="marquee-item">/// HIGH PERFORMANCE /// NO LIMITS ///</span>
+        <span class="marquee-item">/// HIGH PERFORMANCE /// NO LIMITS ///</span>
+        <span class="marquee-item">/// HIGH PERFORMANCE /// NO LIMITS ///</span>
+        <span class="marquee-item">/// HIGH PERFORMANCE /// NO LIMITS ///</span>
+        <span class="marquee-item">/// HIGH PERFORMANCE /// NO LIMITS ///</span>
+        <span class="marquee-item">/// HIGH PERFORMANCE /// NO LIMITS ///</span>
+        <span class="marquee-item">/// HIGH PERFORMANCE /// NO LIMITS ///</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script type="importmap">
+{ "imports": { "lenis": "https://unpkg.com/lenis@1.3.23/dist/lenis.mjs" } }
+</script>
+<script type="module">
+import Lenis from 'lenis';
+
+/* ================================================================== */
+/* lenis smooth scroll                                                */
+/* ================================================================== */
+window.scrollTo(0, 0);
+const lenis = new Lenis({ smoothWheel: true });
+function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+lenis.stop();   // locked until the boot sequence clears
+
+/* ================================================================== */
+/* interactive canvas background — grid + flashlight                  */
+/* ================================================================== */
+const GRID = 40;          // px between grid lines
+const RADIUS = 340;       // flashlight radius in px
+
+const cnv = document.getElementById('bg');
+const ctx = cnv.getContext('2d');
+
+let W = 0, H = 0, DPR = 1;
+let pointerX = -9999, pointerY = -9999;   // raw pointer
+let lightX = -9999, lightY = -9999;       // lerped light position
+let glow = 0, glowTarget = 0;             // fades the light in/out
+let seenPointer = false;
+
+function resizeCanvas(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  cnv.width  = Math.round(W * DPR);
+  cnv.height = Math.round(H * DPR);
+  cnv.style.width  = W + 'px';
+  cnv.style.height = H + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+window.addEventListener('pointermove', (e) => {
+  pointerX = e.clientX;
+  pointerY = e.clientY;
+  if (!seenPointer){
+    seenPointer = true;
+    lightX = pointerX;
+    lightY = pointerY;
+  }
+  glowTarget = 1;
+}, { passive: true });
+
+document.addEventListener('pointerleave', () => { glowTarget = 0; });
+window.addEventListener('blur', () => { glowTarget = 0; });
+
+function drawCanvas(){
+  ctx.clearRect(0, 0, W, H);
+
+  // --- 1. the dark base grid ---
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = 'rgba(224,224,224,0.05)';
+  ctx.beginPath();
+  for (let x = 0; x <= W; x += GRID){ ctx.moveTo(x + 0.5, 0); ctx.lineTo(x + 0.5, H); }
+  for (let y = 0; y <= H; y += GRID){ ctx.moveTo(0, y + 0.5); ctx.lineTo(W, y + 0.5); }
+  ctx.stroke();
+
+  if (!seenPointer || glow <= 0.001) return;
+
+  // --- 2. the flashlight ---
+  const g = ctx.createRadialGradient(lightX, lightY, 0, lightX, lightY, RADIUS);
+  g.addColorStop(0,    'rgba(0,255,65,' + (0.15 * glow) + ')');
+  g.addColorStop(0.55, 'rgba(0,255,65,' + (0.05 * glow) + ')');
+  g.addColorStop(1,    'rgba(0,255,65,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(lightX - RADIUS, lightY - RADIUS, RADIUS * 2, RADIUS * 2);
+
+  // --- 3. illuminated grid intersections ---
+  const xStart = Math.floor((lightX - RADIUS) / GRID) * GRID;
+  const xEnd   = Math.ceil((lightX + RADIUS) / GRID) * GRID;
+  const yStart = Math.floor((lightY - RADIUS) / GRID) * GRID;
+  const yEnd   = Math.ceil((lightY + RADIUS) / GRID) * GRID;
+
+  for (let x = xStart; x <= xEnd; x += GRID){
+    if (x < 0 || x > W) continue;
+    for (let y = yStart; y <= yEnd; y += GRID){
+      if (y < 0 || y > H) continue;
+      const dx = x - lightX, dy = y - lightY;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d > RADIUS) continue;
+      const falloff = 1 - d / RADIUS;
+      const a = falloff * falloff * 0.9 * glow;
+      ctx.fillStyle = 'rgba(0,255,65,' + a + ')';
+      ctx.fillRect(x - 1.5, y - 1.5, 3, 3);
+    }
+  }
+}
+
+/* ================================================================== */
+/* magnetic button                                                    */
+/* ================================================================== */
+const magnetic = document.getElementById('magnetic');
+const MAG_RADIUS = 120;   // px of pull range around the button
+const MAG_STRENGTH = 0.38;
+let magX = 0, magY = 0, magTargetX = 0, magTargetY = 0;
+
+window.addEventListener('pointermove', (e) => {
+  const r = magnetic.getBoundingClientRect();
+  const cx = r.left + r.width / 2;
+  const cy = r.top + r.height / 2;
+  const dx = e.clientX - cx;
+  const dy = e.clientY - cy;
+  const d = Math.sqrt(dx * dx + dy * dy);
+  if (d < MAG_RADIUS + Math.max(r.width, r.height) / 2){
+    magTargetX = dx * MAG_STRENGTH;
+    magTargetY = dy * MAG_STRENGTH;
+  } else {
+    magTargetX = 0;
+    magTargetY = 0;
+  }
+}, { passive: true });
+
+/* ================================================================== */
+/* master animation loop                                              */
+/* ================================================================== */
+function loop(){
+  requestAnimationFrame(loop);
+
+  // flashlight easing
+  lightX += (pointerX - lightX) * 0.14;
+  lightY += (pointerY - lightY) * 0.14;
+  glow   += (glowTarget - glow) * 0.08;
+
+  // magnetic easing
+  magX += (magTargetX - magX) * 0.16;
+  magY += (magTargetY - magY) * 0.16;
+  magnetic.style.transform = 'translate3d(' + magX.toFixed(2) + 'px,' + magY.toFixed(2) + 'px,0)';
+
+  drawCanvas();
+}
+requestAnimationFrame(loop);
+
+/* ================================================================== */
+/* hero — staggered letter reveal                                     */
+/* ================================================================== */
+const heroTitle = document.getElementById('heroTitle');
+const hero = document.getElementById('hero');
+
+(function splitTitle(){
+  const text = heroTitle.textContent.trim();
+  heroTitle.textContent = '';
+  let i = 0;
+  [...text].forEach((ch) => {
+    if (ch === ' '){
+      heroTitle.appendChild(document.createTextNode(' '));
+      return;
+    }
+    const span = document.createElement('span');
+    span.className = 'char';
+    span.textContent = ch;
+    span.style.transitionDelay = (i * 0.035) + 's';
+    i++;
+    heroTitle.appendChild(span);
+  });
+})();
+
+/* ================================================================== */
+/* boot sequence                                                      */
+/* ================================================================== */
+const BOOT_MS = 1500;
+const TICK_MS = 50;
+
+const boot = document.getElementById('boot');
+const bootHex = document.getElementById('bootHex');
+const bootStatus = document.getElementById('bootStatus');
+const bootBar = document.getElementById('bootBar');
+const bootPct = document.getElementById('bootPct');
+
+const BOOT_MESSAGES = [
+  'SYSTEM BOOT...',
+  'MOUNTING /NEXUS',
+  'DECRYPTING SHADERS',
+  'LINKING MODULES',
+  'CALIBRATING GRID'
+];
+
+const hexSlots = bootHex.querySelectorAll('span');
+const randHex = () => '0x' + Math.floor(Math.random() * 0xffffff).toString(16).toUpperCase().padStart(6, '0');
+
+const bootStart = performance.now();
+let tickIndex = 0;
+
+const bootTimer = setInterval(() => {
+  hexSlots.forEach((slot) => { slot.textContent = randHex(); });
+  bootStatus.textContent = BOOT_MESSAGES[tickIndex % BOOT_MESSAGES.length];
+  tickIndex++;
+
+  const p = Math.min(1, (performance.now() - bootStart) / BOOT_MS);
+  bootBar.style.width = (p * 100) + '%';
+  bootPct.textContent = String(Math.round(p * 100)).padStart(3, '0');
+}, TICK_MS);
+
+let bootFinished = false;
+function finishBoot(){
+  if (bootFinished) return;
+  bootFinished = true;
+  boot.remove();
+  document.body.classList.remove('is-booting');
+  lenis.start();
+}
+
+setTimeout(() => {
+  clearInterval(bootTimer);
+  bootBar.style.width = '100%';
+  bootPct.textContent = '100';
+  bootStatus.textContent = 'SYSTEM BOOT...';
+
+  // split the overlay: top half slides up, bottom half slides down
+  boot.classList.add('split');
+  boot.style.pointerEvents = 'none';
+
+  // reveal the hero the moment the split starts
+  hero.classList.add('revealed');
+
+  boot.addEventListener('transitionend', (e) => {
+    if (e.propertyName === 'transform') finishBoot();
+  });
+  setTimeout(finishBoot, 1200);   // fallback if transitionend never lands
+}, BOOT_MS);
+</script>
+
+</body>
+</html>

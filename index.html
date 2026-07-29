@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Пять сайтов — витрина работ</title>
+<meta name="description" content="Пять экспериментальных сайтов: WebGL, шейдеры, скролл-анимации. Каждый — один самодостаточный HTML-файл без сборки." />
+<meta name="theme-color" content="#0b0b0c" />
+<style>
+/* ================================================================== */
+/* base                                                               */
+/* ================================================================== */
+*{ margin:0; padding:0; box-sizing:border-box }
+
+:root{
+  --bg:#0b0b0c;
+  --panel:#111113;
+  --line:#232326;
+  --text:#f2f2f3;
+  --dim:#8b8b91;
+  --accent:#e8e8ea;
+}
+
+html{ scroll-behavior:smooth }
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+body.locked{ overflow:hidden }
+
+a{ color:inherit; text-decoration:none }
+button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer }
+:focus-visible{ outline:2px solid #6ea8ff; outline-offset:3px }
+
+.wrap{ max-width:1400px; margin-inline:auto; padding-inline:32px }
+
+/* ================================================================== */
+/* header                                                             */
+/* ================================================================== */
+.top{
+  padding:72px 0 48px;
+  border-bottom:1px solid var(--line);
+}
+.top h1{
+  font-size:clamp(32px, 5vw, 56px);
+  font-weight:700;
+  letter-spacing:-0.03em;
+  line-height:1.05;
+  max-width:20ch;
+}
+.top p{
+  margin-top:20px;
+  max-width:62ch;
+  font-size:17px;
+  color:var(--dim);
+}
+.badges{
+  margin-top:28px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.badge{
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:999px;
+  padding:6px 14px;
+  font-size:13px;
+  color:var(--dim);
+}
+.badge b{ color:var(--text); font-weight:600 }
+
+/* ================================================================== */
+/* grid                                                               */
+/* ================================================================== */
+.grid{
+  padding:48px 0 96px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(420px, 1fr));
+  gap:32px;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--panel);
+  overflow:hidden;
+  cursor:pointer;
+  transition:border-color .35s ease, transform .35s cubic-bezier(.16,1,.3,1);
+}
+.card:hover{ border-color:#3a3a40; transform:translateY(-3px) }
+
+/* --- thumbnail: poster + live iframe ---------------------------- */
+.thumb{
+  position:relative;
+  aspect-ratio:16 / 10;
+  overflow:hidden;
+  background:#000;
+  border-bottom:1px solid var(--line);
+}
+.thumb iframe{
+  position:absolute;
+  top:0; left:0;
+  width:1440px;
+  height:900px;
+  border:0;
+  transform-origin:top left;
+  transform:scale(var(--s, .29));
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .5s ease;
+}
+.thumb.live iframe{ opacity:1 }
+
+.poster{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:0 8%;
+  transition:opacity .5s ease;
+  pointer-events:none;
+  overflow:hidden;
+}
+.thumb.live .poster{ opacity:0 }
+
+.hint{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  z-index:3;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(10,10,12,.66);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  color:#fff;
+  border-radius:999px;
+  padding:5px 12px;
+  font-size:12px;
+  letter-spacing:.01em;
+  transition:opacity .35s ease;
+}
+.thumb.live .hint{ opacity:0 }
+
+/* --- per-project posters ---------------------------------------- */
+.p-lumora{ background:#f1f0ee; color:#111 }
+.p-lumora .p-title{ font-size:52px; font-weight:600; letter-spacing:-.02em }
+.p-lumora .p-sub{ color:rgba(17,17,17,.55) }
+.p-lumora .spark{ width:14px; height:14px; border-radius:50%; background:#b15f2c; margin-bottom:18px }
+
+.p-laocoon{ background:radial-gradient(120% 90% at 70% 40%, #3a2413 0%, #120b06 45%, #000 100%); color:#fff6ed }
+.p-laocoon .p-title{ font-family:Georgia, 'Times New Roman', serif; font-size:50px; font-weight:400; letter-spacing:.02em; line-height:1 }
+.p-laocoon .p-sub{ color:rgba(255,246,237,.5) }
+
+.p-loopstack{ background:#000; color:#fff; justify-content:flex-end; padding-bottom:6% }
+.p-loopstack .p-title{ font-size:74px; font-weight:400; letter-spacing:-.03em; line-height:.85 }
+.p-loopstack .p-sub{ color:rgba(255,255,255,.5) }
+.p-loopstack .dot{ display:inline-block; width:11px; height:11px; border-radius:50%; background:#39FF14; box-shadow:0 0 14px #39FF14; margin-bottom:16px }
+
+.p-nexus{
+  background:
+    radial-gradient(38% 55% at 32% 45%, rgba(0,255,65,.20) 0%, rgba(0,255,65,0) 70%),
+    repeating-linear-gradient(0deg, rgba(224,224,224,.07) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(90deg, rgba(224,224,224,.07) 0 1px, transparent 1px 40px),
+    #050505;
+  color:#e0e0e0;
+}
+.p-nexus .p-title{ font-size:50px; font-weight:700; letter-spacing:-.03em; line-height:.95 }
+.p-nexus .p-sub{ color:#00ff41; letter-spacing:.2em; font-size:11px }
+
+.p-aura{ background:#ecebe9; color:#1a1a1a }
+.p-aura .p-title{ font-family:Georgia, 'Times New Roman', serif; font-size:56px; font-weight:400; letter-spacing:.14em; text-transform:uppercase }
+.p-aura .p-sub{ color:rgba(26,26,26,.5) }
+.p-aura .rule{ width:64px; height:1px; background:rgba(26,26,26,.3); margin-bottom:20px }
+
+.p-sub{
+  margin-top:10px;
+  font-size:12px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+/* --- card meta --------------------------------------------------- */
+.meta{ padding:22px 24px 24px }
+.meta-head{ display:flex; align-items:baseline; gap:12px }
+.num{ font-size:12px; color:var(--dim); font-variant-numeric:tabular-nums }
+.meta h2{ font-size:20px; font-weight:600; letter-spacing:-.01em }
+.meta > p{
+  margin-top:10px;
+  font-size:14.5px;
+  color:var(--dim);
+  line-height:1.6;
+}
+.tags{ margin-top:16px; display:flex; flex-wrap:wrap; gap:6px }
+.tag{
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:4px 9px;
+  font-size:12px;
+  color:var(--dim);
+}
+.actions{ margin-top:20px; display:flex; align-items:center; gap:10px }
+.btn{
+  border-radius:999px;
+  padding:10px 20px;
+  font-size:13.5px;
+  font-weight:600;
+  transition:background-color .3s ease, color .3s ease, border-color .3s ease;
+}
+.btn-primary{ background:var(--accent); color:#0b0b0c }
+.btn-primary:hover{ background:#fff }
+.btn-ghost{ border:1px solid var(--line); color:var(--dim) }
+.btn-ghost:hover{ border-color:#3a3a40; color:var(--text) }
+
+/* ================================================================== */
+/* full-screen viewer                                                 */
+/* ================================================================== */
+.viewer{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  flex-direction:column;
+  background:#000;
+  opacity:0;
+  transition:opacity .3s ease;
+}
+.viewer.mounted{ display:flex }
+.viewer.open{ opacity:1 }
+
+.viewer-bar{
+  flex:none;
+  height:52px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:0 14px;
+  background:#0b0b0c;
+  border-bottom:1px solid var(--line);
+}
+.viewer-title{ font-size:14px; font-weight:600; margin-right:auto; display:flex; align-items:baseline; gap:10px }
+.viewer-title small{ font-weight:400; color:var(--dim); font-size:12.5px }
+.vbtn{
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:7px 14px;
+  font-size:12.5px;
+  color:var(--dim);
+  transition:border-color .25s ease, color .25s ease;
+}
+.vbtn:hover{ border-color:#3a3a40; color:var(--text) }
+.vbtn.close{ background:var(--accent); color:#0b0b0c; border-color:var(--accent) }
+.vbtn.close:hover{ background:#fff }
+.viewer-frame{ flex:1; width:100%; border:0; background:#000 }
+
+.viewer-nav{ display:flex; gap:6px }
+
+/* ================================================================== */
+/* footer                                                             */
+/* ================================================================== */
+.foot{
+  border-top:1px solid var(--line);
+  padding:36px 0 64px;
+  font-size:13.5px;
+  color:var(--dim);
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 32px;
+  justify-content:space-between;
+}
+kbd{
+  border:1px solid var(--line);
+  border-bottom-width:2px;
+  border-radius:5px;
+  padding:1px 6px;
+  font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size:12px;
+  color:var(--text);
+}
+
+@media (max-width:720px){
+  .wrap{ padding-inline:20px }
+  .top{ padding:48px 0 32px }
+  .grid{ grid-template-columns:1fr; gap:24px; padding:32px 0 64px }
+  .hint{ display:none }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <h1>Пять экспериментальных сайтов</h1>
+    <p>WebGL и шейдеры, скролл-сценарии, кастомные курсоры и загрузчики. Каждый проект — один самодостаточный <code>index.html</code>: без сборки, без фреймворков, без зависимостей кроме CDN.</p>
+    <div class="badges">
+      <span class="badge"><b>5</b> проектов</span>
+      <span class="badge"><b>0</b> шагов сборки</span>
+      <span class="badge">Three.js · GLSL · Canvas · Lenis</span>
+      <span class="badge">Наведи на превью — оно оживёт</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid" id="grid">
+
+    <!-- 01 ------------------------------------------------------- -->
+    <article class="card" data-url="lumora/index.html" data-name="Lumora" data-note="Дизайн- и инженерная студия">
+      <div class="thumb">
+        <div class="poster p-lumora">
+          <div class="spark"></div>
+          <div class="p-title">Lumora</div>
+          <div class="p-sub">Design &amp; Engineering Studio</div>
+        </div>
+        <iframe data-src="lumora/index.html" title="Превью Lumora" loading="lazy" tabindex="-1" scrolling="no"></iframe>
+        <span class="hint">наведи для живого превью</span>
+      </div>
+      <div class="meta">
+        <div class="meta-head"><span class="num">01</span><h2>Lumora</h2></div>
+        <p>Светлый редакторский лендинг. Прелоадер отсчитывает 000→100 и уезжает вверх, в герое — «жидкая кисть»: курсор проявляет второе фото поверх первого. Все появления на пружинной физике.</p>
+        <div class="tags"><span class="tag">Lenis</span><span class="tag">Canvas 2D</span><span class="tag">Spring-физика</span><span class="tag">Адаптивная rem-сетка</span></div>
+        <div class="actions">
+          <span class="btn btn-primary">Смотреть</span>
+          <a class="btn btn-ghost" href="lumora/index.html" target="_blank" rel="noopener">Новая вкладка ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 02 ------------------------------------------------------- -->
+    <article class="card" data-url="laocoon/index.html" data-name="Laocoön" data-note="Bronze and Time">
+      <div class="thumb">
+        <div class="poster p-laocoon">
+          <div class="p-title">Bronze<br>and Time</div>
+          <div class="p-sub">Laocoön · WebGL</div>
+        </div>
+        <iframe data-src="laocoon/index.html" title="Превью Laocoön" loading="lazy" tabindex="-1" scrolling="no"></iframe>
+        <span class="hint">наведи для живого превью</span>
+      </div>
+      <div class="meta">
+        <div class="meta-head"><span class="num">02</span><h2>Laocoön — Bronze and Time</h2></div>
+        <p>Самый тяжёлый проект. Бронзовая статуя в WebGL, камера облетает её на 360° по мере скролла, на фоне дышит шейдер жидкого металла и палитра плывёт из бронзы в сапфир. Плюс 450 кузнечных искр.</p>
+        <div class="tags"><span class="tag">Three.js r160</span><span class="tag">GLSL-шейдер</span><span class="tag">GLTF</span><span class="tag">Скролл-сценарий</span></div>
+        <div class="actions">
+          <span class="btn btn-primary">Смотреть</span>
+          <a class="btn btn-ghost" href="laocoon/index.html" target="_blank" rel="noopener">Новая вкладка ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 03 ------------------------------------------------------- -->
+    <article class="card" data-url="loopstack/index.html" data-name="Loopstack" data-note="Один экран, без скролла">
+      <div class="thumb">
+        <div class="poster p-loopstack">
+          <div class="dot"></div>
+          <div class="p-title">Loopstack</div>
+          <div class="p-sub">Think. Build. Repeat.</div>
+        </div>
+        <iframe data-src="loopstack/index.html" title="Превью Loopstack" loading="lazy" tabindex="-1" scrolling="no"></iframe>
+        <span class="hint">наведи для живого превью</span>
+      </div>
+      <div class="meta">
+        <div class="meta-head"><span class="num">03</span><h2>Loopstack</h2></div>
+        <p>Один неподвижный экран — «финальный кадр» сайта. Видео с цветком на фоне, гигантский вордмарк въезжает по буквам из-под маски, за курсором тянется стеклянная плашка «SAY HELLO!».</p>
+        <div class="tags"><span class="tag">CSS-анимации</span><span class="tag">Video</span><span class="tag">Кастомный курсор</span><span class="tag">Glassmorphism</span></div>
+        <div class="actions">
+          <span class="btn btn-primary">Смотреть</span>
+          <a class="btn btn-ghost" href="loopstack/index.html" target="_blank" rel="noopener">Новая вкладка ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 04 ------------------------------------------------------- -->
+    <article class="card" data-url="neon-nexus/index.html" data-name="NEON-NEXUS" data-note="Кибер-бруталист">
+      <div class="thumb">
+        <div class="poster p-nexus">
+          <div class="p-title">BEYOND<br>THE PIXEL.</div>
+          <div class="p-sub">N-NEXUS</div>
+        </div>
+        <iframe data-src="neon-nexus/index.html" title="Превью NEON-NEXUS" loading="lazy" tabindex="-1" scrolling="no"></iframe>
+        <span class="hint">наведи для живого превью</span>
+      </div>
+      <div class="meta">
+        <div class="meta-head"><span class="num">04</span><h2>NEON-NEXUS</h2></div>
+        <p>Кибер-бруталистское портфолио. Boot-загрузчик со случайными hex-кодами раскалывается пополам, фон — сетка на канвасе с «фонариком» под курсором, у ссылок глитч-разрыв, у кнопки магнитный ховер.</p>
+        <div class="tags"><span class="tag">Canvas 2D</span><span class="tag">Glitch-эффект</span><span class="tag">Магнитный ховер</span><span class="tag">Lenis</span></div>
+        <div class="actions">
+          <span class="btn btn-primary">Смотреть</span>
+          <a class="btn btn-ghost" href="neon-nexus/index.html" target="_blank" rel="noopener">Новая вкладка ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 05 ------------------------------------------------------- -->
+    <article class="card" data-url="aura-estates/index.html" data-name="AURA ESTATES" data-note="Люкс-недвижимость">
+      <div class="thumb">
+        <div class="poster p-aura">
+          <div class="rule"></div>
+          <div class="p-title">Aura</div>
+          <div class="p-sub">Spaces that breathe</div>
+        </div>
+        <iframe data-src="aura-estates/index.html" title="Превью AURA ESTATES" loading="lazy" tabindex="-1" scrolling="no"></iframe>
+        <span class="hint">наведи для живого превью</span>
+      </div>
+      <div class="meta">
+        <div class="meta-head"><span class="num">05</span><h2>AURA ESTATES</h2></div>
+        <p>Шоурум премиальной недвижимости. Заголовок — маска, внутри букв живёт фото бетонной архитектуры. Дальше секция пинится и карточки едут вбок по горизонтали, а фото внутри них уходят в контр-параллакс.</p>
+        <div class="tags"><span class="tag">Горизонтальный скролл</span><span class="tag">position: sticky</span><span class="tag">Параллакс</span><span class="tag">Текст-маска</span></div>
+        <div class="actions">
+          <span class="btn btn-primary">Смотреть</span>
+          <a class="btn btn-ghost" href="aura-estates/index.html" target="_blank" rel="noopener">Новая вкладка ↗</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="foot">
+    <span>Лучше смотреть на десктопе — почти везде есть эффекты, завязанные на курсор.</span>
+    <span><kbd>Esc</kbd> закрыть · <kbd>←</kbd> <kbd>→</kbd> переключать проекты</span>
+  </div>
+</main>
+
+<!-- ================================================================ -->
+<!-- full-screen viewer                                               -->
+<!-- ================================================================ -->
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Просмотр проекта">
+  <div class="viewer-bar">
+    <span class="viewer-title"><b id="vName">—</b><small id="vNote"></small></span>
+    <span class="viewer-nav">
+      <button class="vbtn" id="vPrev" title="Предыдущий (←)">←</button>
+      <button class="vbtn" id="vNext" title="Следующий (→)">→</button>
+    </span>
+    <a class="vbtn" id="vOpen" target="_blank" rel="noopener">Открыть отдельно ↗</a>
+    <button class="vbtn close" id="vClose">Закрыть ✕</button>
+  </div>
+  <iframe class="viewer-frame" id="vFrame" title="Проект"></iframe>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var cards = [].slice.call(document.querySelectorAll('.card'));
+
+  /* ---------------------------------------------------------------- */
+  /* thumbnails: keep the 1440x900 iframe scaled to the card width     */
+  /* ---------------------------------------------------------------- */
+  var thumbs = [].slice.call(document.querySelectorAll('.thumb'));
+
+  function rescale(el){
+    var w = el.clientWidth;
+    if (w) el.style.setProperty('--s', (w / 1440).toFixed(4));
+  }
+  thumbs.forEach(rescale);
+
+  if (window.ResizeObserver){
+    var ro = new ResizeObserver(function(entries){
+      entries.forEach(function(en){ rescale(en.target); });
+    });
+    thumbs.forEach(function(t){ ro.observe(t); });
+  } else {
+    window.addEventListener('resize', function(){ thumbs.forEach(rescale); });
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* mount the live preview only on hover / focus (keeps the page light)*/
+  /* ---------------------------------------------------------------- */
+  function mount(card){
+    var thumb = card.querySelector('.thumb');
+    var frame = thumb.querySelector('iframe');
+    if (frame.getAttribute('src')) return;
+    rescale(thumb);
+    frame.addEventListener('load', function(){ thumb.classList.add('live'); }, { once:true });
+    frame.setAttribute('src', frame.getAttribute('data-src'));
+  }
+
+  cards.forEach(function(card){
+    card.addEventListener('pointerenter', function(){ mount(card); });
+    card.addEventListener('focusin', function(){ mount(card); });
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* full-screen viewer                                                */
+  /* ---------------------------------------------------------------- */
+  var viewer  = document.getElementById('viewer');
+  var vFrame  = document.getElementById('vFrame');
+  var vName   = document.getElementById('vName');
+  var vNote   = document.getElementById('vNote');
+  var vOpen   = document.getElementById('vOpen');
+  var current = -1;
+  var isOpen  = false;
+
+  function show(i){
+    current = (i + cards.length) % cards.length;
+    var card = cards[current];
+    var url  = card.getAttribute('data-url');
+    vName.textContent = card.getAttribute('data-name');
+    vNote.textContent = card.getAttribute('data-note');
+    vOpen.setAttribute('href', url);
+    vFrame.setAttribute('src', url);
+  }
+
+  function open(i){
+    show(i);
+    if (isOpen) return;
+    isOpen = true;
+    viewer.classList.add('mounted');
+    document.body.classList.add('locked');
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ viewer.classList.add('open'); });
+    });
+    document.addEventListener('keydown', onKey);
+  }
+
+  function close(){
+    if (!isOpen) return;
+    isOpen = false;
+    viewer.classList.remove('open');
+    document.body.classList.remove('locked');
+    document.removeEventListener('keydown', onKey);
+    setTimeout(function(){
+      if (isOpen) return;
+      viewer.classList.remove('mounted');
+      vFrame.removeAttribute('src');   // stop the project's rAF loops
+    }, 320);
+  }
+
+  function onKey(e){
+    if (e.key === 'Escape')     close();
+    if (e.key === 'ArrowRight') show(current + 1);
+    if (e.key === 'ArrowLeft')  show(current - 1);
+  }
+
+  cards.forEach(function(card, i){
+    card.addEventListener('click', function(e){
+      if (e.target.closest('a')) return;   // "новая вкладка" keeps its own behaviour
+      open(i);
+    });
+  });
+
+  document.getElementById('vClose').addEventListener('click', close);
+  document.getElementById('vPrev').addEventListener('click', function(){ show(current - 1); });
+  document.getElementById('vNext').addEventListener('click', function(){ show(current + 1); });
+})();
+</script>
+
+</body>
+</html>

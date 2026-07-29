@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AURA ESTATES — Avant-Garde Property</title>
+<meta name="description" content="AURA ESTATES — an avant-garde property collection. Spaces that breathe." />
+<meta name="theme-color" content="#ecebe9" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Onest:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ================================================================== */
+/* design tokens                                                      */
+/* ================================================================== */
+:root{
+  --bg:#ecebe9;
+  --text:#1a1a1a;
+  --ink:#0a0a0a;
+  --line:#d1d0cd;
+  --pad:3.5rem;
+  --header-h:5rem;
+}
+
+/* ================================================================== */
+/* reset + adaptive rem grid                                          */
+/* ================================================================== */
+*{ margin:0; padding:0; box-sizing:border-box }
+
+html{ font-size:16px; -webkit-font-smoothing:antialiased }
+@media (max-width:1920px){ html{ font-size:0.833333vw } }   /* base 1920 */
+@media (max-width:1440px){ html{ font-size:1.111111vw } }   /* base 1440 */
+@media (max-width:1024px){ html{ font-size:1.5625vw } }     /* base 1024 */
+@media (max-width:640px){  html{ font-size:3.888888vw } }   /* base 411  */
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Onest', sans-serif;
+  font-weight:400;
+  overflow-x:hidden;
+}
+body.is-locked{ overflow:hidden; height:100vh }
+
+ul{ list-style:none }
+img{ display:block; width:100%; height:100%; object-fit:cover }
+a{ color:inherit; text-decoration:none }
+button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer }
+::selection{ background:var(--ink); color:var(--bg) }
+:focus-visible{ outline:1px solid var(--ink); outline-offset:4px }
+
+.shell{ padding-inline:var(--pad) }
+.eyebrow{
+  font-size:0.6875rem;
+  font-weight:500;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:rgba(26,26,26,0.5);
+}
+.serif{ font-family:'Cinzel', Georgia, serif; font-weight:400 }
+.tnum{ font-variant-numeric:tabular-nums }
+
+/* ================================================================== */
+/* cinematic loader                                                   */
+/* ================================================================== */
+#loader{
+  position:fixed;
+  inset:0;
+  z-index:500;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2.5rem;
+  transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+#loader.done{ opacity:0; pointer-events:none }
+
+.loader-media{
+  width:34rem;
+  height:24rem;
+  overflow:hidden;
+  background:var(--line);
+}
+.loader-media img{
+  transform:scale(1.5);
+  filter:blur(14px);
+  opacity:0;
+  animation:loader-zoom 2s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+@keyframes loader-zoom{
+  0%   { transform:scale(1.5); filter:blur(14px); opacity:0 }
+  22%  { opacity:1 }
+  100% { transform:scale(1);   filter:blur(0);    opacity:1 }
+}
+
+.loader-brand{
+  font-family:'Cinzel', Georgia, serif;
+  font-size:1.125rem;
+  letter-spacing:0.55em;
+  text-transform:uppercase;
+  color:var(--text);
+  opacity:0;
+  animation:loader-brand 1.6s cubic-bezier(0.16,1,0.3,1) 0.35s forwards;
+}
+@keyframes loader-brand{ from{ opacity:0 } to{ opacity:0.85 } }
+
+/* ================================================================== */
+/* header                                                             */
+/* ================================================================== */
+.site-header{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:200;
+  height:var(--header-h);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-inline:var(--pad);
+  mix-blend-mode:difference;
+  color:#ffffff;
+}
+.site-header .brand{
+  font-family:'Cinzel', Georgia, serif;
+  font-size:0.9375rem;
+  letter-spacing:0.42em;
+  text-transform:uppercase;
+}
+.site-header nav{ display:flex; gap:2.5rem }
+.site-header nav a{
+  font-size:0.6875rem;
+  font-weight:500;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  position:relative;
+  padding-bottom:0.25rem;
+}
+.site-header nav a::after{
+  content:'';
+  position:absolute;
+  left:0; bottom:0;
+  width:100%; height:1px;
+  background:currentColor;
+  transform:scaleX(0);
+  transform-origin:right;
+  transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.site-header nav a:hover::after{ transform:scaleX(1); transform-origin:left }
+
+/* ================================================================== */
+/* hero                                                               */
+/* ================================================================== */
+.hero{
+  min-height:80vh;
+  padding-top:calc(var(--header-h) + 4rem);
+  padding-bottom:3rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  gap:3rem;
+}
+
+.hero-title{
+  font-family:'Cinzel', Georgia, serif;
+  font-weight:400;
+  font-size:15rem;
+  line-height:0.82;
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
+
+  /* the image lives inside the letterforms */
+  background-image:url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1800&q=80');
+  background-repeat:no-repeat;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+  animation:hero-pan 26s ease-in-out infinite alternate;
+}
+@keyframes hero-pan{
+  0%   { background-size:150% auto; background-position:22% 38% }
+  100% { background-size:178% auto; background-position:78% 62% }
+}
+.hero-title .line{ display:block }
+.hero-title .line.indent{ padding-left:8vw }
+
+.hero-foot{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:3rem;
+  border-top:1px solid var(--line);
+  padding-top:1.5rem;
+}
+.hero-foot p{
+  max-width:34ch;
+  font-size:0.9375rem;
+  font-weight:300;
+  line-height:1.7;
+  color:rgba(26,26,26,0.72);
+}
+.scroll-cue{
+  display:inline-flex;
+  align-items:center;
+  gap:0.75rem;
+  font-size:0.6875rem;
+  font-weight:500;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:rgba(26,26,26,0.55);
+}
+.scroll-cue span.rule{
+  display:block;
+  width:4rem;
+  height:1px;
+  background:var(--line);
+  position:relative;
+  overflow:hidden;
+}
+.scroll-cue span.rule::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:var(--text);
+  transform:translateX(-100%);
+  animation:cue 2.6s cubic-bezier(0.65,0,0.35,1) infinite;
+}
+@keyframes cue{
+  0%   { transform:translateX(-100%) }
+  55%  { transform:translateX(0) }
+  100% { transform:translateX(100%) }
+}
+
+/* ================================================================== */
+/* statement                                                          */
+/* ================================================================== */
+.intro{ padding-block:12rem }
+.intro-grid{
+  display:grid;
+  grid-template-columns:1fr 2fr;
+  gap:4rem;
+}
+.intro h2{
+  font-family:'Cinzel', Georgia, serif;
+  font-weight:400;
+  font-size:3.25rem;
+  line-height:1.18;
+  letter-spacing:-0.01em;
+  max-width:22ch;
+}
+.intro h2 em{ font-style:italic; color:rgba(26,26,26,0.45) }
+.intro-side{ display:flex; flex-direction:column; gap:2rem; padding-top:0.75rem }
+.intro-side p{
+  font-size:0.9375rem;
+  font-weight:300;
+  line-height:1.8;
+  color:rgba(26,26,26,0.7);
+  max-width:40ch;
+}
+
+/* generic scroll reveal */
+.rv{
+  opacity:0;
+  transform:translateY(2rem);
+  transition:opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1);
+}
+.rv.in{ opacity:1; transform:none }
+
+/* ================================================================== */
+/* horizontal gallery                                                 */
+/* ================================================================== */
+.gallery{ position:relative }
+
+.gallery-sticky{
+  position:sticky;
+  top:0;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+.gallery-bar{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:2rem;
+  padding:calc(var(--header-h) + 1.5rem) var(--pad) 2rem;
+  border-bottom:1px solid var(--line);
+}
+.gallery-bar h2{
+  font-family:'Cinzel', Georgia, serif;
+  font-weight:400;
+  font-size:2rem;
+  letter-spacing:0.02em;
+  text-transform:uppercase;
+}
+.gallery-count{
+  font-size:0.6875rem;
+  font-weight:500;
+  letter-spacing:0.28em;
+  color:rgba(26,26,26,0.5);
+}
+
+.gallery-viewport{
+  flex:1;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+.gallery-track{
+  display:flex;
+  align-items:stretch;
+  gap:2.5rem;
+  padding-inline:var(--pad);
+  will-change:transform;
+}
+
+.card{
+  position:relative;
+  flex:none;
+  width:42rem;
+  border:1px solid var(--line);
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+}
+.card-media{
+  position:relative;
+  height:30rem;
+  overflow:hidden;
+  background:var(--line);
+}
+.card-media img{
+  transform:scale(1.2);
+  will-change:transform;
+}
+
+.card-overlay{
+  position:absolute;
+  inset:0;
+  background:var(--ink);
+  display:grid;
+  place-items:center;
+  opacity:0;
+  transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.card:hover .card-overlay{ opacity:1 }
+
+.view-btn{
+  border:1px solid rgba(255,255,255,0.5);
+  color:#ffffff;
+  padding:1rem 2.25rem;
+  font-size:0.6875rem;
+  font-weight:500;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  transform:translateY(0.75rem);
+  opacity:0;
+  transition:transform 0.7s cubic-bezier(0.16,1,0.3,1) 0.08s, opacity 0.7s cubic-bezier(0.16,1,0.3,1) 0.08s, background-color 0.4s ease, color 0.4s ease;
+}
+.card:hover .view-btn{ transform:translateY(0); opacity:1 }
+.view-btn:hover{ background:#ffffff; color:var(--ink) }
+
+.card-foot{ padding:1.75rem; display:flex; flex-direction:column; gap:1.5rem }
+.card-foot h3{
+  font-family:'Cinzel', Georgia, serif;
+  font-weight:400;
+  font-size:1.5rem;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+}
+.specs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--line);
+  padding-top:1.25rem;
+  gap:1rem;
+}
+.specs > div{ display:flex; flex-direction:column; gap:0.4rem }
+.specs dt{
+  font-size:0.625rem;
+  font-weight:500;
+  letter-spacing:0.24em;
+  text-transform:uppercase;
+  color:rgba(26,26,26,0.45);
+}
+.specs dd{
+  font-size:1rem;
+  font-weight:400;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:0.01em;
+}
+
+.gallery-progress{
+  height:1px;
+  background:var(--line);
+  margin-inline:var(--pad);
+  margin-bottom:2.5rem;
+  position:relative;
+}
+.gallery-progress i{
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:0%;
+  background:var(--ink);
+  display:block;
+}
+
+/* ================================================================== */
+/* footer                                                             */
+/* ================================================================== */
+.site-footer{
+  position:relative;
+  overflow:hidden;
+  background:var(--ink);
+  color:var(--bg);
+  padding-top:10rem;
+}
+.footer-inner{ position:relative; z-index:2 }
+
+.footer-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6rem;
+  padding-bottom:8rem;
+  border-bottom:1px solid rgba(236,235,233,0.14);
+}
+.footer-lead h2{
+  font-family:'Cinzel', Georgia, serif;
+  font-weight:400;
+  font-size:4rem;
+  line-height:1.08;
+  letter-spacing:-0.01em;
+  max-width:14ch;
+}
+.footer-lead p{
+  margin-top:2rem;
+  max-width:36ch;
+  font-size:0.9375rem;
+  font-weight:300;
+  line-height:1.8;
+  color:rgba(236,235,233,0.6);
+}
+.footer-lead .eyebrow{ color:rgba(236,235,233,0.45); display:block; margin-bottom:1.75rem }
+
+.contact-form{ display:flex; flex-direction:column; gap:2.25rem }
+.field{ display:flex; flex-direction:column; gap:0.75rem }
+.field label{
+  font-size:0.625rem;
+  font-weight:500;
+  letter-spacing:0.26em;
+  text-transform:uppercase;
+  color:rgba(236,235,233,0.45);
+}
+.field input, .field textarea{
+  font:inherit;
+  font-size:1rem;
+  font-weight:300;
+  color:var(--bg);
+  background:transparent;
+  border:none;
+  border-bottom:1px solid rgba(236,235,233,0.22);
+  padding:0.75rem 0;
+  outline:none;
+  transition:border-color 0.4s ease;
+  resize:none;
+}
+.field input::placeholder, .field textarea::placeholder{ color:rgba(236,235,233,0.28) }
+.field input:focus, .field textarea:focus{ border-bottom-color:var(--bg) }
+
+.submit-btn{
+  align-self:flex-start;
+  border:1px solid rgba(236,235,233,0.35);
+  padding:1.125rem 3rem;
+  font-size:0.6875rem;
+  font-weight:500;
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:var(--bg);
+  transition:background-color 0.45s cubic-bezier(0.16,1,0.3,1), color 0.45s cubic-bezier(0.16,1,0.3,1), border-color 0.45s ease;
+}
+.submit-btn:hover{ background:var(--bg); color:var(--ink); border-color:var(--bg) }
+
+.footer-legal{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:2rem;
+  padding-block:2.5rem 3rem;
+  font-size:0.6875rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(236,235,233,0.4);
+}
+.footer-legal nav{ display:flex; gap:2rem }
+.footer-legal a:hover{ color:var(--bg) }
+
+.footer-watermark{
+  position:absolute;
+  left:0; right:0;
+  bottom:-2rem;
+  z-index:1;
+  text-align:center;
+  pointer-events:none;
+  user-select:none;
+  font-family:'Cinzel', Georgia, serif;
+  font-weight:400;
+  font-size:15rem;
+  line-height:1;
+  letter-spacing:0.12em;
+  color:var(--bg);
+  opacity:0.05;
+}
+
+/* ================================================================== */
+/* modal                                                              */
+/* ================================================================== */
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:400;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:1.5rem;
+  background:rgba(10,10,10,0.55);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  opacity:0;
+  transition:opacity 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.modal.mounted{ display:flex }
+.modal.open{ opacity:1 }
+
+.modal-panel{
+  width:100%;
+  max-width:34rem;
+  background:var(--bg);
+  color:var(--text);
+  padding:3.5rem;
+  text-align:center;
+  transform:translateY(1.5rem) scale(0.98);
+  transition:transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.modal.open .modal-panel{ transform:none }
+.modal-panel h2{
+  font-family:'Cinzel', Georgia, serif;
+  font-weight:400;
+  font-size:2.25rem;
+  margin:1.25rem 0 1rem;
+  letter-spacing:0.01em;
+}
+.modal-panel p{
+  font-size:0.9375rem;
+  font-weight:300;
+  line-height:1.8;
+  color:rgba(26,26,26,0.65);
+  max-width:34ch;
+  margin-inline:auto;
+}
+.modal-close{
+  margin-top:2.5rem;
+  border:1px solid var(--line);
+  padding:1rem 2.75rem;
+  font-size:0.6875rem;
+  font-weight:500;
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  transition:background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+.modal-close:hover{ background:var(--ink); color:var(--bg); border-color:var(--ink) }
+
+/* ================================================================== */
+/* small screens                                                      */
+/* ================================================================== */
+@media (max-width:1024px){
+  :root{ --pad:2rem }
+  .hero-title{ font-size:9rem }
+  .intro-grid{ grid-template-columns:1fr; gap:2.5rem }
+  .footer-grid{ grid-template-columns:1fr; gap:4rem }
+  .card{ width:34rem }
+  .card-media{ height:24rem }
+}
+@media (max-width:640px){
+  :root{ --pad:1.25rem }
+  .hero-title{ font-size:4.25rem; line-height:0.9 }
+  .hero-title .line.indent{ padding-left:2rem }
+  .hero-foot{ flex-direction:column; align-items:flex-start; gap:1.5rem }
+  .intro{ padding-block:6rem }
+  .intro h2{ font-size:2.25rem }
+  .card{ width:20rem }
+  .card-media{ height:15rem }
+  .specs{ grid-template-columns:1fr; gap:0.75rem }
+  .footer-lead h2{ font-size:2.5rem }
+  .footer-watermark{ font-size:7rem }
+  .footer-legal{ flex-direction:column; align-items:flex-start; gap:1rem }
+  .loader-media{ width:80vw; height:56vw }
+}
+</style>
+</head>
+<body class="is-locked">
+
+<!-- ================================================================ -->
+<!-- cinematic loader                                                 -->
+<!-- ================================================================ -->
+<div id="loader">
+  <div class="loader-media">
+    <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1400&q=80" alt="" />
+  </div>
+  <div class="loader-brand">Aura Estates</div>
+</div>
+
+<!-- ================================================================ -->
+<!-- header                                                           -->
+<!-- ================================================================ -->
+<header class="site-header">
+  <a href="#top" class="brand" data-scroll="top">Aura Estates</a>
+  <nav>
+    <a href="#gallery" data-scroll="gallery">Residences</a>
+    <a href="#studio" data-scroll="studio">Studio</a>
+    <a href="#contact" data-scroll="contact">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ============================================================== -->
+  <!-- hero                                                           -->
+  <!-- ============================================================== -->
+  <section class="hero shell">
+    <h1 class="hero-title">
+      <span class="line">Spaces</span>
+      <span class="line indent">That</span>
+      <span class="line">Breathe.</span>
+    </h1>
+
+    <div class="hero-foot">
+      <p>An avant-garde collection of residences where light, mass and silence are treated as building materials.</p>
+      <span class="scroll-cue"><span class="rule"></span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- statement                                                      -->
+  <!-- ============================================================== -->
+  <section class="intro shell" id="studio">
+    <div class="intro-grid">
+      <h2 class="rv">Architecture is the considered <em>arrangement of air.</em></h2>
+      <div class="intro-side">
+        <p class="rv" style="transition-delay:.08s">We represent a small, deliberate portfolio — houses commissioned from architects who work in concrete, stone and daylight, and who understand that restraint is the rarest luxury of all.</p>
+        <p class="rv" style="transition-delay:.16s">Each property is documented in full before it is offered. Nothing is staged. What you see is the building as it stands, in the light it was designed for.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- horizontal gallery                                             -->
+  <!-- ============================================================== -->
+  <section class="gallery" id="gallery">
+    <div class="gallery-sticky">
+
+      <div class="gallery-bar">
+        <h2>Selected Residences</h2>
+        <span class="gallery-count tnum">Four Properties — MMXXVI</span>
+      </div>
+
+      <div class="gallery-viewport">
+        <div class="gallery-track" id="galleryTrack">
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=80" alt="Villa Monolith" />
+              <div class="card-overlay"><button type="button" class="view-btn">View Property</button></div>
+            </div>
+            <div class="card-foot">
+              <h3>Villa Monolith</h3>
+              <dl class="specs">
+                <div><dt>Sq.Ft</dt><dd>8,400</dd></div>
+                <div><dt>Year</dt><dd>2023</dd></div>
+                <div><dt>Location</dt><dd>Los Angeles</dd></div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80" alt="Casa Vertigo" />
+              <div class="card-overlay"><button type="button" class="view-btn">View Property</button></div>
+            </div>
+            <div class="card-foot">
+              <h3>Casa Vertigo</h3>
+              <dl class="specs">
+                <div><dt>Sq.Ft</dt><dd>6,120</dd></div>
+                <div><dt>Year</dt><dd>2021</dd></div>
+                <div><dt>Location</dt><dd>Lisbon</dd></div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1400&q=80" alt="The Stone Pavilion" />
+              <div class="card-overlay"><button type="button" class="view-btn">View Property</button></div>
+            </div>
+            <div class="card-foot">
+              <h3>The Stone Pavilion</h3>
+              <dl class="specs">
+                <div><dt>Sq.Ft</dt><dd>11,750</dd></div>
+                <div><dt>Year</dt><dd>2024</dd></div>
+                <div><dt>Location</dt><dd>Kyoto</dd></div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1400&q=80" alt="House No. 07" />
+              <div class="card-overlay"><button type="button" class="view-btn">View Property</button></div>
+            </div>
+            <div class="card-foot">
+              <h3>House No. 07</h3>
+              <dl class="specs">
+                <div><dt>Sq.Ft</dt><dd>5,380</dd></div>
+                <div><dt>Year</dt><dd>2022</dd></div>
+                <div><dt>Location</dt><dd>Oslo</dd></div>
+              </dl>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <div class="gallery-progress"><i id="galleryProgress"></i></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================================================================ -->
+<!-- footer                                                           -->
+<!-- ================================================================ -->
+<footer class="site-footer" id="contact">
+  <div class="footer-inner shell">
+    <div class="footer-grid">
+      <div class="footer-lead">
+        <span class="eyebrow">Private Enquiries</span>
+        <h2>Begin a conversation.</h2>
+        <p>Viewings are arranged privately and by appointment. Tell us which residence interests you, or describe the space you are looking for.</p>
+      </div>
+
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="field">
+          <label for="f-name">Name</label>
+          <input type="text" id="f-name" name="name" placeholder="Your full name" required />
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input type="email" id="f-email" name="email" placeholder="you@domain.com" required />
+        </div>
+        <div class="field">
+          <label for="f-message">Message</label>
+          <textarea id="f-message" name="message" rows="3" placeholder="Which property, and when would you like to view it?" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Send Enquiry</button>
+      </form>
+    </div>
+
+    <div class="footer-legal">
+      <span>&copy; 2026 Aura Estates</span>
+      <nav>
+        <a href="#privacy">Privacy</a>
+        <a href="#terms">Terms</a>
+        <a href="#instagram">Instagram</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="footer-watermark" aria-hidden="true">AURA</div>
+</footer>
+
+<!-- ================================================================ -->
+<!-- modal                                                            -->
+<!-- ================================================================ -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-panel" id="modalPanel">
+    <span class="eyebrow">Aura Estates</span>
+    <h2 id="modalTitle">Enquiry received.</h2>
+    <p>Thank you. A private advisor will be in touch within one business day to arrange your viewing.</p>
+    <button type="button" class="modal-close" id="modalClose">Close</button>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": { "lenis": "https://unpkg.com/lenis@1.3.23/dist/lenis.mjs" } }
+</script>
+<script type="module">
+import Lenis from 'lenis';
+
+/* ================================================================== */
+/* adaptive grid — keep scaling above the 1920 base                   */
+/* ================================================================== */
+function applyAdaptiveGrid(){
+  const FONT_BASE = 16, baseWidth = 1920, coef = 0.6666;
+  const w = window.innerWidth;
+  const widthReduction = ((baseWidth - w) / baseWidth) * 100;
+  const size = FONT_BASE - (FONT_BASE * (widthReduction * coef)) / 100;
+  if (size > FONT_BASE) document.documentElement.style.fontSize = size + 'px';
+  else document.documentElement.style.removeProperty('font-size');
+}
+applyAdaptiveGrid();
+window.addEventListener('resize', applyAdaptiveGrid);
+
+/* ================================================================== */
+/* lenis                                                              */
+/* ================================================================== */
+window.scrollTo(0, 0);
+const lenis = new Lenis({ smoothWheel: true });
+function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+lenis.stop();   // locked for the duration of the loader
+
+function unlockScroll(){
+  document.body.classList.remove('is-locked');
+  lenis.start();
+}
+
+document.querySelectorAll('[data-scroll]').forEach((el) => {
+  el.addEventListener('click', (e) => {
+    const target = document.getElementById(el.dataset.scroll);
+    if (!target) return;
+    e.preventDefault();
+    lenis.scrollTo(target, { offset: 0 });
+  });
+});
+
+/* ================================================================== */
+/* horizontal gallery — sticky pin + scroll-driven translate          */
+/* ================================================================== */
+const gallery = document.getElementById('gallery');
+const track = document.getElementById('galleryTrack');
+const progressBar = document.getElementById('galleryProgress');
+const cards = [...track.querySelectorAll('.card')];
+const cardImages = cards.map((c) => c.querySelector('.card-media img'));
+
+const PARALLAX = 7;      // % of counter-movement inside each frame
+let distance = 0;        // px the track has to travel
+let galleryVisible = false;
+
+function layoutGallery(){
+  // the track travels exactly its own overflow, so 1px of scroll = 1px sideways
+  distance = Math.max(0, track.scrollWidth - window.innerWidth);
+  gallery.style.height = (window.innerHeight + distance) + 'px';
+}
+layoutGallery();
+window.addEventListener('resize', layoutGallery);
+window.addEventListener('load', layoutGallery);
+
+// only run the math while the section is on screen
+const galleryIO = new IntersectionObserver((entries) => {
+  entries.forEach((e) => { galleryVisible = e.isIntersecting; });
+}, { rootMargin: '10% 0px 10% 0px' });
+galleryIO.observe(gallery);
+
+function updateGallery(){
+  if (!galleryVisible) return;
+
+  const rect = gallery.getBoundingClientRect();
+  const total = gallery.offsetHeight - window.innerHeight;
+  let p = total > 0 ? (-rect.top) / total : 0;
+  p = Math.max(0, Math.min(1, p));
+
+  track.style.transform = 'translate3d(' + (-distance * p) + 'px,0,0)';
+  progressBar.style.width = (p * 100) + '%';
+
+  // parallax: each image drifts against the direction the track is moving
+  const vpCenter = window.innerWidth / 2;
+  for (let i = 0; i < cards.length; i++){
+    const r = cards[i].getBoundingClientRect();
+    const rel = ((r.left + r.width / 2) - vpCenter) / window.innerWidth;
+    cardImages[i].style.transform = 'scale(1.2) translateX(' + (-rel * PARALLAX).toFixed(3) + '%)';
+  }
+}
+
+function frame(){
+  requestAnimationFrame(frame);
+  updateGallery();
+}
+requestAnimationFrame(frame);
+
+/* ================================================================== */
+/* scroll reveals                                                     */
+/* ================================================================== */
+const revealIO = new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    revealIO.unobserve(e.target);
+  });
+}, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
+document.querySelectorAll('.rv').forEach((el) => revealIO.observe(el));
+
+/* ================================================================== */
+/* enquiry modal                                                      */
+/* ================================================================== */
+const modal = document.getElementById('modal');
+const modalPanel = document.getElementById('modalPanel');
+const contactForm = document.getElementById('contactForm');
+let modalOpen = false;
+
+function openModal(){
+  if (modalOpen) return;
+  modalOpen = true;
+  modal.classList.add('mounted');
+  lenis.stop();
+  document.body.classList.add('is-locked');
+  requestAnimationFrame(() => requestAnimationFrame(() => modal.classList.add('open')));
+  document.addEventListener('keydown', modalKey);
+}
+function closeModal(){
+  if (!modalOpen) return;
+  modalOpen = false;
+  modal.classList.remove('open');
+  document.removeEventListener('keydown', modalKey);
+  document.body.classList.remove('is-locked');
+  lenis.start();
+  setTimeout(() => { if (!modalOpen) modal.classList.remove('mounted'); }, 520);
+}
+function modalKey(e){ if (e.key === 'Escape') closeModal(); }
+
+contactForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (!contactForm.reportValidity()) return;
+  openModal();
+  setTimeout(() => contactForm.reset(), 600);
+});
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+modal.addEventListener('click', closeModal);
+modalPanel.addEventListener('click', (e) => e.stopPropagation());
+
+/* ================================================================== */
+/* cinematic loader — 2s zoom-out, then release the page              */
+/* ================================================================== */
+const LOADER_MS = 2000;
+const loader = document.getElementById('loader');
+let loaderDone = false;
+
+function finishLoader(){
+  if (loaderDone) return;
+  loaderDone = true;
+  loader.remove();
+  layoutGallery();
+}
+
+setTimeout(() => {
+  loader.classList.add('done');
+  unlockScroll();
+  loader.addEventListener('transitionend', (e) => {
+    if (e.propertyName === 'opacity') finishLoader();
+  });
+  setTimeout(finishLoader, 1200);   // fallback if transitionend never lands
+}, LOADER_MS);
+</script>
+
+</body>
+</html>
