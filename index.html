@@ -5,19 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tolybay Uakhit, websites for any business</title>
 <meta name="description" content="Freelance web designer and developer in Istanbul. Websites for cafés, clinics, shops, builders, studios, hotels and personal brands: simple and fast, or with interactive 3D.">
-<meta name="theme-color" content="#24316F">
+<meta name="theme-color" content="#3341F0">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://token1267.github.io/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Tolybay Uakhit, websites for any business">
-<meta property="og:description" content="A website for every window. Simple and fast, or with interactive 3D, built by hand.">
+<meta property="og:description" content="Websites for every shop on the street. Simple and fast, or with interactive 3D, built by hand.">
 <meta property="og:image" content="https://token1267.github.io/assets/og.jpg">
 <meta property="og:url" content="https://token1267.github.io/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -39,134 +47,153 @@
 <body>
 <a class="skip" href="#work">Skip to the work</a>
 
-<header class="top wrap">
-  <a class="brand" href="#">Tolybay Uakhit</a>
-  <nav aria-label="Main">
-    <a href="#work">Work</a>
-    <a href="#rates">Rates</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-panel">
+    <header class="top">
+      <a class="brand" href="#">Tolybay Uakhit</a>
+      <nav aria-label="Main">
+        <a href="#work">Work</a>
+        <a href="#build">What I build</a>
+        <a href="#rates">Rates</a>
+        <a class="nav-cta" href="#contact">Free concept</a>
+      </nav>
+    </header>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 id="hero-title">Websites for every shop on the street.</h1>
+        <p class="lead">Cafés, clinics, bakeries, gyms, hotels, shops: I design and build websites for any business. Simple and fast, or with interactive 3D, like this street.</p>
+        <div class="actions">
+          <a class="btn btn-white" href="#contact">Get a free concept</a>
+          <a class="btn btn-outline-white" href="#work">See the work</a>
+        </div>
+      </div>
+
+      <div class="street-stage" id="streetStage">
+        <canvas id="street" role="img" aria-label="A small 3D street with a café, a clinic, a hotel, a bakery, a gym and a shop. Cars drive along the road."></canvas>
+        <div class="street-label" id="streetLabel" aria-hidden="true"></div>
+        <img class="street-fallback" src="assets/street.jpg" width="1200" height="800" loading="lazy" alt="A small 3D street with a café, a clinic, a hotel, a bakery, a gym and a shop">
+        <p class="street-hint">Hover or tap a building: it shows what that business needs on its website.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Cafés</span><i></i><span>Clinics</span><i></i><span>Bakeries</span><i></i><span>Gyms</span><i></i><span>Hotels</span><i></i><span>Shops</span><i></i><span>Salons</span><i></i><span>Builders</span><i></i><span>Schools</span><i></i><span>Studios</span><i></i>
+    <span>Cafés</span><i></i><span>Clinics</span><i></i><span>Bakeries</span><i></i><span>Gyms</span><i></i><span>Hotels</span><i></i><span>Shops</span><i></i><span>Salons</span><i></i><span>Builders</span><i></i><span>Schools</span><i></i><span>Studios</span><i></i>
+  </div>
+</div>
 
 <main>
-  <section class="hero wrap">
-    <div class="hero-copy">
-      <h1>A website for every window.</h1>
-      <p class="lead">Cafés, clinics, shops, builders, studios, hotels, personal brands: I design and build websites for any business. Simple and fast, or with interactive 3D when you want people to remember you.</p>
-      <div class="actions">
-        <a class="btn btn-dusk" href="#contact">Ask for a free concept</a>
-        <a class="btn btn-line" href="#work">See the work</a>
-      </div>
-      <p class="hero-note">Freelance web designer and developer in Istanbul. I work in English, Russian, Kazakh and Turkish.</p>
-    </div>
-
-    <div class="building" id="building">
-      <div class="sign" id="sign" aria-hidden="true"><span>T</span><span>O</span><span>L</span><span>Y</span><span>B</span><span>A</span><span>Y</span></div>
-      <div class="facade" id="facade" role="img" aria-label="A building where every window is a different business; windows light up when you move the cursor over them"></div>
-      <p class="lobby" id="lobby" aria-live="polite">Every window is somebody’s business.</p>
-      <div class="door" aria-hidden="true"><span></span><span></span></div>
-    </div>
-  </section>
-
   <section class="work wrap" id="work" aria-labelledby="work-title">
-    <div class="section-head">
+    <div class="head">
       <h2 id="work-title">Selected work</h2>
-      <p class="lead">Three demo projects in three different trades. Each one is a working site you can open and click through.</p>
+      <p>Three demo projects in three different trades. Each one is a working site you can open and click through.</p>
     </div>
-    <div class="projects">
-      <article class="project">
-        <a class="shot" href="https://token1267.github.io/archa-demo/">
-          <img src="assets/archa.jpg" width="1280" height="769" loading="lazy" alt="Archa kitchens homepage with a 3D kitchen, a wall length slider and facade options">
-        </a>
+
+    <article class="case case-sage">
+      <div class="case-text">
         <p class="trade">Furniture maker</p>
         <h3>Archa kitchens</h3>
-        <p>Move the slider to the length of your wall: the 3D kitchen, the drawing and the price update at once.</p>
-        <a class="more" href="https://token1267.github.io/archa-demo/">Open the live demo</a>
-      </article>
-      <article class="project">
-        <a class="shot" href="https://token1267.github.io/rovno-demo/">
-          <img src="assets/rovno.jpg" width="1280" height="769" loading="lazy" alt="Rovno renovation homepage with a 3D room and a cost calculator button">
-        </a>
+        <p>Move the slider to the length of your wall: the 3D kitchen, the drawing and the price update at once. The visitor gets a real number before calling.</p>
+        <ul class="tags"><li>3D configurator</li><li>Live price</li><li>Drawing view</li></ul>
+        <a class="btn btn-ink" href="https://token1267.github.io/archa-demo/">Open the live demo</a>
+      </div>
+      <a class="case-shot" href="https://token1267.github.io/archa-demo/" tabindex="-1" aria-hidden="true">
+        <span class="browser"><span class="bar"><i></i><i></i><i></i></span><img src="assets/archa.jpg" width="1280" height="769" loading="lazy" alt=""></span>
+      </a>
+    </article>
+
+    <article class="case case-sky">
+      <div class="case-text">
         <p class="trade">Renovation company</p>
         <h3>Rovno renovation</h3>
-        <p>A cost calculator gives a price range before the first call, and the request form opens WhatsApp with the details typed in.</p>
-        <a class="more" href="https://token1267.github.io/rovno-demo/">Open the live demo</a>
-      </article>
-      <article class="project">
-        <a class="shot" href="https://token1267.github.io/hotel-demo/en/">
-          <video id="hotelVideo" muted loop playsinline preload="none" poster="assets/hotel-poster.jpg" aria-label="Screen recording of the Tamshy Hotel website: the camera flies down to the building and free rooms light up">
-            <source src="assets/hotel.mp4" type="video/mp4">
-          </video>
-        </a>
+        <p>A cost calculator gives a price range before the first call, and the request form opens WhatsApp with the details already typed in.</p>
+        <ul class="tags"><li>Cost calculator</li><li>WhatsApp requests</li><li>3D room</li></ul>
+        <a class="btn btn-ink" href="https://token1267.github.io/rovno-demo/">Open the live demo</a>
+      </div>
+      <a class="case-shot" href="https://token1267.github.io/rovno-demo/" tabindex="-1" aria-hidden="true">
+        <span class="browser"><span class="bar"><i></i><i></i><i></i></span><img src="assets/rovno.jpg" width="1280" height="769" loading="lazy" alt=""></span>
+      </a>
+    </article>
+
+    <article class="case case-navy">
+      <div class="case-text">
         <p class="trade">Hotel</p>
         <h3>Tamshy Hotel</h3>
-        <p>A 3D evening scene: rooms that are free on the chosen dates light up, and scrolling flies the camera into the room.</p>
-        <a class="more" href="https://token1267.github.io/hotel-demo/en/">Open the live demo</a>
-      </article>
-    </div>
-    <p class="work-note">All three are demos with made-up names, built to show the approach. Archa and Rovno are in Russian, Tamshy has English, Russian and Kazakh.</p>
+        <p>A 3D evening scene: rooms that are free on the chosen dates light up, and scrolling flies the camera through a window into the room.</p>
+        <ul class="tags"><li>three.js scene</li><li>Direct booking</li><li>3 languages</li></ul>
+        <a class="btn btn-white" href="https://token1267.github.io/hotel-demo/en/">Open the live demo</a>
+      </div>
+      <a class="case-shot" href="https://token1267.github.io/hotel-demo/en/" tabindex="-1" aria-hidden="true">
+        <span class="browser"><span class="bar"><i></i><i></i><i></i></span>
+          <video id="hotelVideo" muted loop playsinline preload="none" poster="assets/hotel-poster.jpg"><source src="assets/hotel.mp4" type="video/mp4"></video>
+        </span>
+      </a>
+    </article>
+    <p class="note">All three are demos with made-up names, built to show the approach. Archa and Rovno are in Russian; Tamshy has English, Russian and Kazakh.</p>
   </section>
 
-  <section class="trades wrap" id="trades" aria-labelledby="trades-title">
-    <div class="section-head">
-      <h2 id="trades-title">What I build</h2>
-      <p class="lead">Every business needs something different from its site. A few examples of what goes into it.</p>
+  <section class="build wrap" id="build" aria-labelledby="build-title">
+    <div class="head">
+      <h2 id="build-title">What I build</h2>
+      <p>Every business needs something different from its site. Here is what usually goes in.</p>
     </div>
-    <ul class="trade-list">
+    <ul class="rows">
       <li><h3>Cafés and restaurants</h3><p>Menu with photos and prices, table booking, delivery links, a map that opens in the phone’s navigator.</p></li>
-      <li><h3>Clinics and beauty salons</h3><p>Services with prices, the team, online booking or a WhatsApp button, reviews.</p></li>
-      <li><h3>Shops and catalogs</h3><p>Products with filters, ordering through WhatsApp or online, delivery and returns spelled out.</p></li>
+      <li><h3>Clinics and salons</h3><p>Services with prices, the team, online booking or a WhatsApp button, reviews.</p></li>
+      <li><h3>Shops and catalogues</h3><p>Products with filters, ordering online or through WhatsApp, delivery and returns spelled out.</p></li>
       <li><h3>Builders and home services</h3><p>A cost calculator, finished jobs with photos, a request form that reaches you in seconds.</p></li>
       <li><h3>Furniture and manufacturing</h3><p>A product configurator with a 3D preview and a price that updates as people choose.</p></li>
       <li><h3>Hotels and venues</h3><p>Rooms or halls, dates, direct booking without commission, an optional 3D tour.</p></li>
       <li><h3>Experts and personal brands</h3><p>Portfolio, services, courses, booking a call, a page that says who you are in ten seconds.</p></li>
-      <li><h3>Products and startups</h3><p>A landing page with a 3D view of the product, a waitlist or pre-order, fast load on mobile.</p></li>
+      <li><h3>Products and startups</h3><p>A landing page with a 3D view of the product, a waitlist or pre-order, fast on mobile.</p></li>
     </ul>
   </section>
 
   <section class="rates wrap" id="rates" aria-labelledby="rates-title">
-    <div class="section-head">
+    <div class="head">
       <h2 id="rates-title">Rates</h2>
-      <p class="lead">One fixed price, agreed before I start. You get the source code and help putting the site on your domain.</p>
+      <p>One fixed price, agreed before I start. You get the source code and help putting the site on your domain.</p>
     </div>
-    <table class="rate-table">
-      <thead>
-        <tr><th scope="col">Package</th><th scope="col">What you get</th><th scope="col">Time</th><th scope="col" class="num">Price</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">Website</th>
-          <td>A clean, fast site for any business or personal brand: up to 5 sections, a contact form or WhatsApp button, basic SEO. 2 rounds of changes.</td>
-          <td>5–7 days</td>
-          <td class="num">$250</td>
-        </tr>
-        <tr>
-          <th scope="row">3D landing page</th>
-          <td>One page with up to 6 sections, a custom 3D scene of your product or place, an intro camera move, scroll animation and a contact form. 3 rounds of changes.</td>
-          <td>7 days</td>
-          <td class="num">$390</td>
-        </tr>
-        <tr>
-          <th scope="row">3D block for your site</th>
-          <td>One interactive 3D scene for your existing site. Fits into WordPress, Webflow, Framer or Shopify. 2 rounds of changes.</td>
-          <td>4 days</td>
-          <td class="num">$150</td>
-        </tr>
-        <tr>
-          <th scope="row">Full 3D website</th>
-          <td>Up to 5 pages, a 3D scene modelled in Blender, a scroll story, up to 3 languages and basic SEO. 5 rounds of changes.</td>
-          <td>About 2 weeks</td>
-          <td class="num"><span class="from">from</span> $790</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="plans">
+      <div class="plan">
+        <h3>Website</h3>
+        <p class="price">$250</p>
+        <p class="time">5–7 days</p>
+        <p>A clean, fast site for any business or personal brand: up to 5 sections, a contact form or WhatsApp button, basic SEO. 2 rounds of changes.</p>
+      </div>
+      <div class="plan plan-blue">
+        <h3>3D landing page</h3>
+        <p class="price">$390</p>
+        <p class="time">7 days</p>
+        <p>One page with up to 6 sections, a custom 3D scene of your product or place, an intro camera move, scroll animation and a contact form. 3 rounds of changes.</p>
+      </div>
+      <div class="plan">
+        <h3>3D block for your site</h3>
+        <p class="price">$150</p>
+        <p class="time">4 days</p>
+        <p>One interactive 3D scene for your existing site. Fits into WordPress, Webflow, Framer or Shopify. 2 rounds of changes.</p>
+      </div>
+      <div class="plan">
+        <h3>Full 3D website</h3>
+        <p class="price"><span>from</span> $790</p>
+        <p class="time">About 2 weeks</p>
+        <p>Up to 5 pages, a 3D scene modelled in Blender, a scroll story, up to 3 languages and basic SEO. 5 rounds of changes.</p>
+      </div>
+    </div>
   </section>
 
   <section class="process wrap" aria-labelledby="process-title">
-    <h2 id="process-title">How a project goes</h2>
-    <ol class="flow">
+    <div class="head">
+      <h2 id="process-title">How a project goes</h2>
+      <p>The first step costs you nothing: you see a sketch of your homepage before you decide.</p>
+    </div>
+    <ol class="steps">
       <li><h3>You send a link</h3><p>Your current site, your Instagram, or a few lines about the business.</p></li>
-      <li><h3>I send a concept</h3><p>In 1–2 days, a free sketch of your homepage, so you see the idea before paying.</p></li>
+      <li><h3>I send a concept</h3><p>In 1–2 days, a free sketch of your homepage.</p></li>
       <li><h3>We agree on price and date</h3><p>One price for the whole job and a launch date.</p></li>
       <li><h3>I build, you watch</h3><p>You get a private link and see the site grow.</p></li>
       <li><h3>It goes live</h3><p>On your domain, fast on phones, with the code handed over to you.</p></li>
@@ -174,10 +201,10 @@
   </section>
 
   <section class="about wrap" aria-labelledby="about-title">
-    <h2 id="about-title">About</h2>
-    <div class="about-text">
-      <p>I’m Tolybay Uakhit, a web designer and developer based in Istanbul. I build websites for small businesses of any kind, by hand: clean code that opens fast even on an inexpensive phone, and three.js when a 3D scene helps to sell.</p>
-      <p>Whatever your business is, I’ll sketch your homepage first, for free, so you can judge the idea before we agree on anything.</p>
+    <div class="about-main">
+      <h2 id="about-title">About</h2>
+      <p class="about-lead">I’m Tolybay Uakhit, a web designer and developer based in Istanbul. I build websites for small businesses of any kind, by hand: clean code that opens fast even on an inexpensive phone, and three.js when a 3D scene helps to sell.</p>
+      <p class="about-langs">I work in English, Russian, Kazakh and Turkish.</p>
     </div>
     <div class="faq">
       <details>
@@ -200,15 +227,14 @@
   </section>
 
   <section class="contact" id="contact" aria-labelledby="contact-title">
-    <div class="skyline" id="skyline" aria-hidden="true"></div>
-    <div class="wrap contact-inner">
-      <h2 id="contact-title">Tell me about your business.</h2>
-      <p class="lead">Send a link to your site or a few lines about what you do. I’ll reply with ideas and a fixed price.</p>
-      <div class="contact-links">
-        <a class="btn btn-snow" href="https://contra.com/tolybay_uakhit">Message me on Contra</a>
-        <a class="btn btn-ghost-light" href="https://www.linkedin.com/in/tolybay-uakhit-bab143199">LinkedIn</a>
-        <a class="btn btn-ghost-light" href="https://www.fiverr.com/token1267">Fiverr</a>
-        <a class="btn btn-ghost-light" href="https://www.threads.com/@shintaropan">Threads</a>
+    <div class="contact-panel">
+      <h2 id="contact-title">Let’s build yours.</h2>
+      <p>Send a link to your site or a few lines about what you do. I’ll reply with ideas, a free concept and a fixed price.</p>
+      <div class="actions">
+        <a class="btn btn-white" href="https://contra.com/tolybay_uakhit">Message me on Contra</a>
+        <a class="btn btn-outline-white" href="https://www.linkedin.com/in/tolybay-uakhit-bab143199">LinkedIn</a>
+        <a class="btn btn-outline-white" href="https://www.fiverr.com/token1267">Fiverr</a>
+        <a class="btn btn-outline-white" href="https://www.threads.com/@shintaropan">Threads</a>
       </div>
     </div>
   </section>
@@ -216,9 +242,10 @@
 
 <footer class="foot wrap">
   <p>© 2026 Tolybay Uakhit, Istanbul</p>
-  <p>Hand-built, like the sites above.</p>
+  <p>The street at the top is live three.js, built by hand.</p>
 </footer>
 
+<script type="module" src="scene.js"></script>
 <script src="main.js" defer></script>
 </body>
 </html>
