@@ -182,10 +182,10 @@ async function start() {
     if (!w || !h) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    const far = camera.aspect < 0.8 ? 1.95 : camera.aspect < 1 ? 1.6 : camera.aspect < 1.3 ? 1.08 : 0.9;
+    const far = camera.aspect < 0.8 ? 1.95 : camera.aspect < 1 ? 1.6 : camera.aspect < 1.3 ? 1.2 : 0.9;
     camera.fov = camera.aspect < 1 ? 30 : 26;
     camera.position.set(8.4 * far, 8.6 * far, 15 * far);
-    camera.lookAt(camera.aspect < 1 ? 0 : 0.7, 0.9, 0.3);
+    camera.lookAt(camera.aspect < 1 ? 0 : camera.aspect < 1.3 ? 0.45 : 0.7, 0.9, 0.3);
     camera.updateProjectionMatrix();
   };
   new ResizeObserver(resize).observe(stageEl);
@@ -229,6 +229,14 @@ async function start() {
     }
     label.classList.add('show');
   };
+
+  // ?demo: buildings take turns lifting up, for screen recordings
+  if (new URLSearchParams(location.search).has('demo')) {
+    let i = 0;
+    setTimeout(() => {
+      setInterval(() => { hovered = buildings[i++ % buildings.length]; }, 1700);
+    }, 1200);
+  }
 
   /* ---------- loop ---------- */
   let visible = true;
