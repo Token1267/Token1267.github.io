@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tolybay Uakhit, interactive 3D websites</title>
+<meta name="description" content="Freelance web developer in Istanbul. I build interactive 3D websites with three.js for hotels, venues and brands: fast on phones, fixed prices, a free homepage concept first.">
+<meta name="theme-color" content="#24316F">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://token1267.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tolybay Uakhit, interactive 3D websites">
+<meta property="og:description" content="Websites you can walk into. 3D homepages for hotels, venues and brands, built by hand with three.js.">
+<meta property="og:image" content="https://token1267.github.io/assets/og.jpg">
+<meta property="og:url" content="https://token1267.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Tolybay Uakhit",
+  "jobTitle": "Web developer, interactive 3D websites",
+  "url": "https://token1267.github.io/",
+  "address": {"@type": "PostalAddress", "addressLocality": "Istanbul", "addressCountry": "TR"},
+  "knowsLanguage": ["en", "ru", "kk", "tr"],
+  "knowsAbout": ["three.js", "WebGL", "Blender", "Web design", "Web development"],
+  "sameAs": [
+    "https://contra.com/tolybay_uakhit",
+    "https://www.linkedin.com/in/tolybay-uakhit-bab143199",
+    "https://www.fiverr.com/token1267"
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#work">Skip to the work</a>
+
+<header class="top wrap">
+  <a class="brand" href="#">Tolybay Uakhit</a>
+  <nav aria-label="Main">
+    <a href="#work">Work</a>
+    <a href="#rates">Rates</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <h1>Websites you can walk into.</h1>
+      <p class="lead">I build interactive 3D websites for hotels, venues and brands: the camera glides through your place and the rooms light up. Underneath, it is a fast, ordinary website that works on any phone.</p>
+      <div class="actions">
+        <a class="btn btn-dusk" href="#contact">Ask for a free concept</a>
+        <a class="btn btn-line" href="#work">See the work</a>
+      </div>
+      <p class="hero-note">Freelance web developer in Istanbul. I work in English, Russian, Kazakh and Turkish.</p>
+    </div>
+
+    <div class="building" id="building">
+      <div class="sign" id="sign" aria-hidden="true"><span>T</span><span>O</span><span>L</span><span>Y</span><span>B</span><span>A</span><span>Y</span></div>
+      <div class="facade" id="facade" role="img" aria-label="A building whose windows light up when you move the cursor over it"></div>
+      <div class="door" aria-hidden="true"><span></span><span></span></div>
+    </div>
+  </section>
+
+  <section class="stage" id="work" aria-labelledby="tamshy-title">
+    <div class="stage-sticky">
+      <div class="stage-caption" id="stageCaption">
+        <h2 id="tamshy-title">Tamshy Hotel</h2>
+        <p>A 3D homepage for a hotel in Almaty. Demo project.</p>
+      </div>
+      <div class="window-frame" id="windowFrame">
+        <video id="hotelVideo" muted loop playsinline preload="metadata" poster="assets/hotel-poster.jpg" aria-label="Screen recording of the Tamshy Hotel website: the camera flies down to the hotel, free rooms light up, and the camera flies into a room">
+          <source src="assets/hotel.mp4" type="video/mp4">
+        </video>
+        <div class="lamp" id="lamp" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="case wrap" aria-label="How the Tamshy Hotel page works">
+    <ol class="steps">
+      <li>
+        <img src="assets/step-1.jpg" width="960" height="540" loading="lazy" alt="The hotel homepage seen from above the mountains while the camera descends">
+        <h3><span class="n">1</span>The camera flies down</h3>
+        <p>The page opens high above the mountains and glides down to the hotel while it loads.</p>
+      </li>
+      <li>
+        <img src="assets/step-2.jpg" width="960" height="540" loading="lazy" alt="The hotel at dusk with some windows lit and a note saying 8 of 24 rooms are free">
+        <h3><span class="n">2</span>Free rooms light up</h3>
+        <p>A guest picks the dates, and the windows of free rooms open their curtains and turn on the light.</p>
+      </li>
+      <li>
+        <img src="assets/step-3.jpg" width="960" height="540" loading="lazy" alt="A hotel room with curtains and a price, shown full screen">
+        <h3><span class="n">3</span>Into the room</h3>
+        <p>Scrolling flies the camera through a window, and the room opens full screen with its price.</p>
+      </li>
+    </ol>
+
+    <div class="case-detail">
+      <div class="case-detail-main">
+      <dl class="facts">
+        <div><dt>Booking</dt><dd>Requests go straight to the hotel’s WhatsApp.</dd></div>
+        <div><dt>Book direct</dt><dd>A block that shows guests they pay 10% less than on Booking.com.</dd></div>
+        <div><dt>Languages</dt><dd>English, Russian and Kazakh.</dd></div>
+        <div><dt>Older phones</dt><dd>Phones without 3D support get a light, flat version of the same page.</dd></div>
+        <div><dt>Built with</dt><dd>three.js, Blender and plain JavaScript.</dd></div>
+      </dl>
+      <p class="case-link"><a class="btn btn-dusk" href="https://token1267.github.io/hotel-demo/en/">Open the live demo</a></p>
+      </div>
+      <figure class="phone">
+        <img src="assets/hotel-phone.jpg" width="360" height="640" loading="lazy" alt="The Tamshy Hotel homepage on a phone">
+      </figure>
+    </div>
+  </section>
+
+  <section class="case-two wrap" aria-labelledby="rovno-title">
+    <div class="case-two-text">
+      <h2 id="rovno-title">Rovno renovation</h2>
+      <p class="lead">A website for an apartment renovation company in Kazakhstan. Demo project, in Russian.</p>
+      <ul class="points">
+        <li><strong>Cost calculator.</strong> Enter the flat’s area and the type of work, see a price range before calling.</li>
+        <li><strong>Enquiry to WhatsApp.</strong> The form opens WhatsApp with the details already typed in.</li>
+        <li><strong>3D room.</strong> A small room model shows what the finished flat will look like.</li>
+      </ul>
+      <a class="btn btn-line" href="https://token1267.github.io/rovno-demo/">Open the live demo</a>
+    </div>
+    <figure class="screen">
+      <img src="assets/rovno.jpg" width="1280" height="769" loading="lazy" alt="The Rovno renovation homepage with a 3D room and a cost calculator button">
+    </figure>
+  </section>
+
+  <section class="rates wrap" id="rates" aria-labelledby="rates-title">
+    <div class="section-head">
+      <h2 id="rates-title">Rates</h2>
+      <p class="lead">One fixed price, agreed before I start. You get the source code and help putting the site on your domain.</p>
+    </div>
+    <table class="rate-table">
+      <thead>
+        <tr><th scope="col">Package</th><th scope="col">What you get</th><th scope="col">Time</th><th scope="col" class="num">Price</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">3D landing page</th>
+          <td>One page with up to 6 sections, a custom 3D scene, an intro camera move, scroll animation and a contact or booking form. 3 rounds of changes.</td>
+          <td>7 days</td>
+          <td class="num">$390</td>
+        </tr>
+        <tr>
+          <th scope="row">Simple website</th>
+          <td>A clean, fast site for a business or a personal brand: up to 5 sections, a contact form or WhatsApp button, basic SEO. 2 rounds of changes.</td>
+          <td>5–7 days</td>
+          <td class="num">$250</td>
+        </tr>
+        <tr>
+          <th scope="row">3D hero for your site</th>
+          <td>One interactive 3D scene for the top of your existing site. Fits into WordPress, Webflow, Framer or Shopify. 2 rounds of changes.</td>
+          <td>4 days</td>
+          <td class="num">$150</td>
+        </tr>
+        <tr>
+          <th scope="row">Full 3D website</th>
+          <td>Up to 5 pages, a 3D scene modelled in Blender, a scroll story, up to 3 languages and basic SEO. 5 rounds of changes.</td>
+          <td>About 2 weeks</td>
+          <td class="num"><span class="from">from</span> $790</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="process wrap" aria-labelledby="process-title">
+    <h2 id="process-title">How a project goes</h2>
+    <ol class="flow">
+      <li><h3>You send a link</h3><p>Your current site, your Instagram, or a few lines about the place.</p></li>
+      <li><h3>I send a concept</h3><p>In 1–2 days, a free sketch of your homepage, so you see the idea before paying.</p></li>
+      <li><h3>We agree on price and date</h3><p>One price for the whole job and a launch date.</p></li>
+      <li><h3>I build, you watch</h3><p>You get a private link and see the site grow.</p></li>
+      <li><h3>It goes live</h3><p>On your domain, fast on phones, with the code handed over to you.</p></li>
+    </ol>
+  </section>
+
+  <section class="about wrap" aria-labelledby="about-title">
+    <h2 id="about-title">About</h2>
+    <div class="about-text">
+      <p>I’m Tolybay Uakhit, a web developer based in Istanbul. I build every site by hand: three.js for the 3D, Blender for the models, and plain, fast code underneath, so the page opens quickly even on an inexpensive phone.</p>
+      <p>The two projects above are demos, made to show the approach on real kinds of businesses. If you have a place worth showing, I’ll sketch your homepage first, for free.</p>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Do I need my own 3D model?</summary>
+        <p>No. I model the scene in Blender from your photos, or make a stylised version of your building or product.</p>
+      </details>
+      <details>
+        <summary>Will it work on phones?</summary>
+        <p>Yes. The 3D is tuned for mobile, and phones that can’t run it get a light version of the same page.</p>
+      </details>
+      <details>
+        <summary>Can you add 3D to my existing site?</summary>
+        <p>Yes. The 3D hero is a block that fits into WordPress, Webflow, Framer or Shopify.</p>
+      </details>
+      <details>
+        <summary>Do you write the texts?</summary>
+        <p>I can tidy your texts and suggest a structure. You send the facts: prices, services, photos and contacts.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="skyline" id="skyline" aria-hidden="true"></div>
+    <div class="wrap contact-inner">
+      <h2 id="contact-title">Tell me about your place.</h2>
+      <p class="lead">Send a link to your site or a few lines about the business. I’ll reply with ideas and a fixed price.</p>
+      <div class="contact-links">
+        <a class="btn btn-snow" href="https://contra.com/tolybay_uakhit">Message me on Contra</a>
+        <a class="btn btn-ghost-light" href="https://www.linkedin.com/in/tolybay-uakhit-bab143199">LinkedIn</a>
+        <a class="btn btn-ghost-light" href="https://www.fiverr.com/token1267">Fiverr</a>
+        <a class="btn btn-ghost-light" href="https://www.threads.com/@shintaropan">Threads</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <p>© 2026 Tolybay Uakhit, Istanbul</p>
+  <p>Hand-built, like the sites above.</p>
+</footer>
+
+<script src="main.js" defer></script>
+</body>
+</html>
