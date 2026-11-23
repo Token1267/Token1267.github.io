@@ -54,12 +54,12 @@ a { color: inherit; }
 /* Type */
 h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.015em; }
 h1 {
-  font-size: clamp(3.5rem, 9.4vw, 9.25rem);
+  font-size: clamp(3.4rem, 8.6vw, 8.75rem);
   line-height: 0.88;
   font-stretch: 75%;
   letter-spacing: -0.03em;
   font-weight: 750;
-  max-width: 7.2ch;
+  max-width: 8ch;
 }
 h2 {
   font-size: clamp(2.6rem, 6.4vw, 5.75rem);
@@ -122,7 +122,7 @@ p { margin: 0; }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .hero-note { margin-top: 22px; color: var(--slate); font-size: .98rem; max-width: 30em; }
 
-/* Building */
+/* Building: every window is a business */
 .building {
   position: relative;
   background: var(--dusk);
@@ -173,9 +173,17 @@ p { margin: 0; }
 .w.on.pale { background: var(--lamp-pale); }
 .w.on.warm { background: var(--lamp-warm); }
 
+.lobby {
+  margin-top: clamp(16px, 2vw, 22px);
+  min-height: 1.5em;
+  text-align: center;
+  color: var(--lamp-pale);
+  font-size: .98rem;
+  font-stretch: 92%;
+}
 .door {
   display: flex; justify-content: center; gap: 4px;
-  margin: clamp(18px, 2.4vw, 28px) auto 0;
+  margin: 12px auto 0;
   width: 30%;
 }
 .door span {
@@ -184,98 +192,44 @@ p { margin: 0; }
   border-radius: 3px 3px 0 0;
 }
 
-/* Stage: a window opens into the hotel video */
-.stage { position: relative; height: 240vh; background: var(--dusk); color: var(--snow); }
-.stage-sticky {
-  position: sticky; top: 0;
-  height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(20px, 4vh, 44px);
-  padding: clamp(28px, 7vh, 72px) var(--gutter) clamp(24px, 5vh, 56px);
-  overflow: hidden;
-}
-.stage-caption { text-align: center; opacity: var(--cap, 1); transform: translateY(calc((1 - var(--cap, 1)) * 16px)); }
-.stage-caption p { margin-top: 10px; font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: #C9CFE6; }
-.window-frame {
-  --ix: 0%; --iy: 0%; --r: 12px;
-  position: relative;
-  width: min(1120px, 100%);
-  aspect-ratio: 16 / 9;
-  max-height: 72svh;
-  clip-path: inset(var(--iy) var(--ix) round var(--r));
-  background: var(--off);
-}
-.window-frame video { width: 100%; height: 100%; object-fit: cover; }
-.lamp {
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(var(--dusk), var(--dusk)) center / 6px 100% no-repeat,
-    linear-gradient(var(--dusk), var(--dusk)) center 38% / 100% 6px no-repeat,
-    var(--lamp);
-  opacity: var(--lampo, 0);
-  pointer-events: none;
-}
+/* Section heads */
+.section-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 48px; align-items: end; }
 
-/* Case one */
-.case { padding-top: clamp(64px, 10vw, 128px); padding-bottom: clamp(40px, 6vw, 72px); }
-.steps {
-  list-style: none; margin: 0; padding: 0;
+/* Work */
+.work { padding-top: clamp(72px, 10vw, 136px); padding-bottom: clamp(56px, 8vw, 104px); }
+.projects {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(20px, 2.6vw, 36px);
+  gap: clamp(28px, 3vw, 44px);
+  margin-top: clamp(36px, 5vw, 64px);
 }
-.steps img { border-radius: 8px; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--rule); }
-.steps h3 { margin-top: 18px; display: flex; align-items: baseline; gap: 10px; }
-.steps .n { font-stretch: 75%; font-weight: 800; color: var(--dusk); font-size: 1.6rem; line-height: 1; }
-.steps p { margin-top: 8px; color: var(--slate); max-width: 32em; }
-
-.case-detail {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: clamp(28px, 6vw, 96px);
-  align-items: start;
-  margin-top: clamp(56px, 8vw, 104px);
-}
-.facts { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 40px; }
-.facts div { border-top: 1.5px solid var(--ink); padding-top: 12px; }
-.facts dt { font-weight: 650; font-stretch: 88%; font-size: 1.1rem; }
-.facts dd { margin: 6px 0 0; color: var(--slate); }
-.phone {
-  margin: 0; width: clamp(180px, 20vw, 248px);
-  border: 7px solid var(--ink); border-radius: 30px; overflow: hidden;
-  background: var(--ink);
-}
-.phone img { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; }
-.case-link { margin-top: clamp(32px, 4vw, 48px); }
-
-/* Case two */
-.case-two {
-  display: grid;
-  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
-  gap: clamp(28px, 5vw, 80px);
-  align-items: center;
-  padding-top: clamp(64px, 9vw, 120px);
-  padding-bottom: clamp(64px, 9vw, 120px);
-  border-top: 1.5px solid var(--ink);
-  margin-top: clamp(40px, 6vw, 80px);
-}
-.case-two .lead { margin-top: 18px; }
-.points { list-style: none; margin: 28px 0 32px; padding: 0; display: grid; gap: 14px; max-width: 34em; }
-.points li { color: var(--slate); }
-.points strong { color: var(--ink); font-weight: 650; }
-.screen {
-  margin: 0;
-  border-radius: 10px; overflow: hidden;
-  border: 1.5px solid var(--ink);
+.project { display: flex; flex-direction: column; align-items: flex-start; }
+.shot {
+  display: block; width: 100%;
+  border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden;
   background: var(--white);
+  aspect-ratio: 16 / 10;
 }
-.screen img { width: 100%; }
+.shot img, .shot video { width: 100%; height: 100%; object-fit: cover; object-position: left top; transition: transform .5s ease; }
+@media (hover: hover) { .shot:hover img, .shot:hover video { transform: scale(1.025); } }
+.trade { margin-top: 18px; color: var(--slate); font-size: .95rem; }
+.project h3 { margin-top: 4px; font-size: clamp(1.5rem, 2.2vw, 1.9rem); font-stretch: 78%; font-weight: 700; line-height: 1.05; }
+.project h3 + p { margin-top: 10px; color: var(--slate); max-width: 30em; }
+.more { margin-top: 14px; font-weight: 600; text-underline-offset: 4px; }
+.work-note { margin-top: clamp(28px, 4vw, 44px); color: var(--slate); font-size: .95rem; max-width: 46em; }
+
+/* What I build */
+.trades { padding-top: clamp(64px, 9vw, 120px); padding-bottom: clamp(64px, 9vw, 120px); border-top: 1.5px solid var(--ink); }
+.trade-list {
+  list-style: none; margin: clamp(36px, 5vw, 60px) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 36px 28px;
+}
+.trade-list li { border-top: 1.5px solid var(--ink); padding-top: 14px; }
+.trade-list h3 { font-size: 1.25rem; }
+.trade-list p { margin-top: 8px; color: var(--slate); }
 
 /* Rates */
 .rates { padding-top: clamp(64px, 9vw, 120px); padding-bottom: clamp(48px, 7vw, 96px); border-top: 1.5px solid var(--ink); }
-.section-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 48px; align-items: end; }
 .rate-table { width: 100%; border-collapse: collapse; margin-top: clamp(32px, 5vw, 56px); }
 .rate-table thead th {
   text-align: left; font-weight: 500; color: var(--slate); font-size: .95rem;
@@ -338,6 +292,10 @@ p { margin: 0; }
 /* Contact */
 .contact { position: relative; overflow: hidden; background: var(--dusk); color: var(--snow); padding: clamp(80px, 12vw, 160px) 0; }
 .contact-inner { position: relative; z-index: 1; }
+.contact h2 { font-size: clamp(3rem, 8.4vw, 8rem); max-width: 9ch; }
+.contact .lead { color: #D6DBEE; margin-top: 24px; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.contact :focus-visible { outline-color: var(--lamp); }
 .skyline {
   --u: 1px;
   position: absolute; right: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))); bottom: 0;
@@ -357,27 +315,19 @@ p { margin: 0; }
 .sw.on { background: var(--lamp); }
 .sw.on.pale { background: var(--lamp-pale); }
 .sw.on.warm { background: var(--lamp-warm); }
-.case-detail-main { display: grid; align-content: start; }
-.contact h2 { font-size: clamp(3rem, 8.4vw, 8rem); max-width: 9ch; }
-.contact .lead { color: #D6DBEE; margin-top: 24px; }
-.contact-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
-.contact :focus-visible { outline-color: var(--lamp); }
 
 .foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding-top: 24px; padding-bottom: 32px; color: var(--slate); font-size: .95rem; }
 
 /* Tablet */
+@media (max-width: 1100px) {
+  .trade-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 960px) {
   .hero { grid-template-columns: 1fr; min-height: 0; align-items: start; }
   .hero-copy { padding-bottom: 0; }
   .building { justify-self: center; max-width: 520px; margin-top: 72px; }
-  .steps { grid-template-columns: 1fr; }
-  .steps li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 24px; align-items: start; }
-  .steps img { grid-row: span 2; }
-  .steps h3 { margin-top: 0; }
-  .case-detail { grid-template-columns: 1fr; }
-  .phone { justify-self: center; }
-  .case-two { grid-template-columns: 1fr; }
   .section-head { grid-template-columns: 1fr; }
+  .projects { grid-template-columns: 1fr; gap: 56px; }
   .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 24px; }
   .about { grid-template-columns: 1fr; }
   .faq { grid-column: 1; }
@@ -390,12 +340,8 @@ p { margin: 0; }
   body { font-size: 1rem; }
   .top nav a:not([href="#contact"]) { display: none; }
   .building { padding-top: 20px; }
-  .facade { grid-template-columns: repeat(6, 1fr); }
   .facade .w:nth-child(n+31) { display: none; }
-  .steps li { grid-template-columns: 1fr; }
-  .steps img { grid-row: auto; }
-  .steps h3 { margin-top: 14px; }
-  .facts { grid-template-columns: 1fr; gap: 20px; }
+  .trade-list { grid-template-columns: 1fr; gap: 24px; }
   .flow { grid-template-columns: 1fr; }
   .rate-table thead { display: none; }
   .rate-table, .rate-table tbody, .rate-table tr, .rate-table th, .rate-table td { display: block; width: 100%; }
@@ -405,17 +351,9 @@ p { margin: 0; }
   .rate-table td.num { grid-column: 2; grid-row: 1; width: auto; }
   .rate-table td:nth-child(2) { grid-column: 1 / -1; }
   .rate-table td:nth-child(3) { grid-column: 1 / -1; width: auto; color: var(--slate); }
-  .stage { height: 200vh; }
-  .window-frame { max-height: 60svh; }
   .contact-links .btn { flex: 1 1 auto; }
 }
 
-/* Reduced motion: no scroll-driven opening, everything shown as is */
 @media (prefers-reduced-motion: reduce) {
-  .stage { height: auto; }
-  .stage-sticky { position: static; height: auto; gap: 32px; }
-  .stage-caption { opacity: 1; transform: none; }
-  .window-frame { clip-path: none; border-radius: 10px; }
-  .lamp { display: none; }
-  .w, .sign span, .btn, .faq summary::after { transition: none; }
+  .w, .sign span, .btn, .faq summary::after, .shot img, .shot video, .sw { transition: none; }
 }

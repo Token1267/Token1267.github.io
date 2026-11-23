@@ -1,14 +1,25 @@
 (() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- Building: windows that light up ---------- */
+  // small seeded random so the patterns look natural but stay the same on every visit
+  let seed = 7;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+
+  /* ---------- Building: every window is somebody's business ---------- */
+  const businesses = [
+    'Coffee shop', 'Dental clinic', 'Barbershop', 'Bakery', 'Law office', 'Yoga studio',
+    'Car service', 'Flower shop', 'Language school', 'Architecture studio', 'Online store', 'Real estate agency',
+    'Beauty salon', 'Kitchen maker', 'Gym', 'Photo studio', 'Travel agency', 'Pet grooming',
+    'Accountant', 'Tailor', 'Music school', 'Interior designer', 'Pharmacy', 'Hotel',
+    'Coworking', 'Kids club', 'Wedding planner', 'Printing house', 'Physiotherapy', 'Tea house',
+    'Bike repair', 'Jewellery workshop', 'Startup', 'Cleaning service', 'Driving school', 'Ceramics studio',
+    'Restaurant', 'Optician', 'Bookshop', 'Moving company', 'Psychologist', 'Furniture shop',
+  ];
   const facade = document.getElementById('facade');
+  const lobby = document.getElementById('lobby');
   const hero = document.querySelector('.hero');
   const COLS = 6, ROWS = 7;
   const windows = [];
-  // small seeded random so the "lived-in" pattern looks natural but stable
-  let seed = 7;
-  const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
 
   for (let i = 0; i < COLS * ROWS; i++) {
     const w = document.createElement('span');
@@ -16,6 +27,8 @@
     const tone = rnd();
     w.dataset.tone = tone < 0.3 ? 'pale' : tone > 0.8 ? 'warm' : '';
     w.dataset.home = rnd() < 0.3 ? '1' : '';
+    w.dataset.floor = ROWS - Math.floor(i / COLS) + 1;
+    w.dataset.biz = businesses[i % businesses.length];
     facade.appendChild(w);
     windows.push(w);
   }
@@ -26,6 +39,13 @@
   };
   const lightOff = (w) => w.classList.remove('on', 'pale', 'warm');
   const timers = new WeakMap();
+
+  let lastBiz = null;
+  const announce = (w) => {
+    if (w === lastBiz) return;
+    lastBiz = w;
+    lobby.textContent = `Floor ${w.dataset.floor}: ${w.dataset.biz}`;
+  };
 
   const visit = (w) => {
     lightOn(w);
@@ -51,15 +71,19 @@
     home.forEach((w) => setTimeout(() => lightOn(w), 500 + Math.random() * 1900));
   }
 
-  // Pointer lights nearby windows; touch lights where you tap
+  // Pointer lights nearby windows and names the closest business; touch does the same where you tap
   const near = (x, y) => {
+    let closest = null, best = Infinity;
     for (const w of windows) {
       const r = w.getBoundingClientRect();
       if (!r.width) continue;
       const dx = x - (r.left + r.width / 2);
       const dy = y - (r.top + r.height / 2);
-      if (dx * dx + dy * dy < (r.width * 1.7) ** 2) visit(w);
+      const d = dx * dx + dy * dy;
+      if (d < (r.width * 1.7) ** 2) visit(w);
+      if (d < best && Math.abs(dx) < r.width && Math.abs(dy) < r.height) { best = d; closest = w; }
     }
+    if (closest) announce(closest);
   };
   hero.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse') near(e.clientX, e.clientY); });
   facade.addEventListener('pointerdown', (e) => near(e.clientX, e.clientY));
@@ -68,6 +92,7 @@
     if (!w) return;
     w.dataset.home = w.dataset.home ? '' : '1';
     w.dataset.home ? lightOn(w) : lightOff(w);
+    announce(w);
   });
 
   /* ---------- Contact: a small skyline at night ---------- */
@@ -85,12 +110,16 @@
     el.style.setProperty('--tw', t.tw);
     el.style.setProperty('--th', t.th);
     el.style.setProperty('--tc', t.tc);
-    const rows = Math.floor((t.th - 14) / ((t.tw - 24 - (t.tc - 1) * 8) / t.tc * 4 / 3 + 8));
+    const winW = (t.tw - 24 - (t.tc - 1) * 8) / t.tc;
+    const rows = Math.floor((t.th - 14) / (winW * 4 / 3 + 8));
     for (let i = 0; i < rows * t.tc; i++) {
       const w = document.createElement('span');
       w.className = 'sw';
       const tone = rnd();
-      if (rnd() < 0.55) w.classList.add('on', tone < 0.3 ? 'pale' : tone > 0.8 ? 'warm' : 'x');
+      if (rnd() < 0.55) {
+        w.classList.add('on');
+        if (tone < 0.3) w.classList.add('pale'); else if (tone > 0.8) w.classList.add('warm');
+      }
       el.appendChild(w);
       sky.push(w);
     }
@@ -100,59 +129,21 @@
     setInterval(() => {
       if (document.hidden) return;
       const w = sky[Math.floor(Math.random() * sky.length)];
-      if (w.classList.contains('on')) w.classList.remove('on', 'pale', 'warm', 'x');
+      if (w.classList.contains('on')) w.classList.remove('on', 'pale', 'warm');
       else w.classList.add('on');
     }, 1400);
   }
 
-  /* ---------- Stage: one window opens into the hotel video ---------- */
-  const stage = document.getElementById('work');
-  const frame = document.getElementById('windowFrame');
-  const caption = document.getElementById('stageCaption');
-  const lamp = document.getElementById('lamp');
+  /* ---------- Hotel video plays only while it is on screen ---------- */
   const video = document.getElementById('hotelVideo');
-
-  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-  const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
-
-  let inView = false;
-  let opened = 0;
-
-  const playIfOpen = () => {
-    if (inView && (reduce || opened > 0.25)) {
-      if (video.paused) video.play().catch(() => {});
-    } else if (!video.paused) {
-      video.pause();
-    }
-  };
-
-  if (reduce) {
-    video.controls = true;
-    frame.style.setProperty('--ix', '0%');
-    frame.style.setProperty('--iy', '0%');
-  } else {
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      const rect = stage.getBoundingClientRect();
-      const span = stage.offsetHeight - window.innerHeight;
-      const p = clamp(-rect.top / (span || 1));
-      opened = smooth(0.06, 0.7, p);
-      frame.style.setProperty('--ix', (46 * (1 - opened)).toFixed(2) + '%');
-      frame.style.setProperty('--iy', (40 * (1 - opened)).toFixed(2) + '%');
-      frame.style.setProperty('--r', (4 + 8 * opened).toFixed(1) + 'px');
-      lamp.style.setProperty('--lampo', (1 - smooth(0.18, 0.5, p)).toFixed(3));
-      caption.style.setProperty('--cap', smooth(0.5, 0.78, p).toFixed(3));
-      playIfOpen();
-    };
-    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    update();
+  if (video && !reduce) {
+    new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        if (video.preload === 'none') video.preload = 'auto';
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    }, { threshold: 0.3 }).observe(video);
   }
-
-  new IntersectionObserver((entries) => {
-    inView = entries[0].isIntersecting;
-    playIfOpen();
-  }, { threshold: 0.15 }).observe(stage);
 })();
