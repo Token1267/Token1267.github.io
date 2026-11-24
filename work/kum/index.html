@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kum &amp; Cezve, sand coffee in Moda (demo)</title>
+<meta name="description" content="Demo website concept: a Kadıköy café that brews Turkish coffee in hot sand. Menu, table booking and directions. Made by Tolybay Uakhit.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0F6B78">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F6B78'/%3E%3Cpath d='M9 13h11l-1.5 10h-8z' fill='%23C8703A'/%3E%3Cpath d='M20 14l6-3' stroke='%23C8703A' stroke-width='2'/%3E%3C/svg%3E">
+<meta property="og:title" content="Kum & Cezve, sand coffee in Moda (demo)">
+<meta property="og:image" content="https://token1267.github.io/work/kum/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+</head>
+<body>
+<p class="demo-bar">Demo website by <a href="https://token1267.github.io/">Tolybay Uakhit</a>. The café, address and prices are made up.</p>
+
+<section class="hero">
+  <div class="panel">
+    <header class="top">
+      <a class="logo" href="#">Kum <span>&amp;</span> Cezve</a>
+      <nav aria-label="Main">
+        <a href="#menu">Menu</a>
+        <a href="#visit">Visit</a>
+        <a class="nav-book" href="#book">Book a table</a>
+      </nav>
+    </header>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>Coffee, slow-cooked in hot sand.</h1>
+        <p class="lead">Turkish coffee brewed the old way: a copper cezve, sand heated to 200&nbsp;°C and three minutes of patience. Plus espresso and filter from beans we roast every Tuesday.</p>
+        <div class="actions">
+          <a class="btn btn-sand" href="#book">Book a table</a>
+          <a class="btn btn-line" href="#menu">See the menu</a>
+        </div>
+        <p class="hours">Moda, Kadıköy. Open every day, 8:00–23:00.</p>
+      </div>
+      <div class="cezve-stage" id="cezveStage">
+        <canvas id="cezve" role="img" aria-label="A copper cezve moving through hot sand in a copper tray, with steam rising, next to a small cup of Turkish coffee"></canvas>
+        <img class="cezve-fallback" src="og.jpg" width="1200" height="630" loading="lazy" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how wrap" aria-labelledby="how-title">
+  <h2 id="how-title">How sand coffee is made</h2>
+  <ol class="steps">
+    <li><h3>Into the cezve</h3><p>Finely ground beans, cold water and, if you like, sugar. Tell us sade, orta or şekerli.</p></li>
+    <li><h3>Through the sand</h3><p>The barista moves the cezve through sand heated to 200&nbsp;°C. It warms the coffee evenly from every side.</p></li>
+    <li><h3>When the foam rises</h3><p>The moment the foam reaches the rim, it goes into your cup, foam first. With water and a piece of lokum.</p></li>
+  </ol>
+</section>
+
+<section class="menu wrap" id="menu" aria-labelledby="menu-title">
+  <div class="menu-head">
+    <h2 id="menu-title">Menu</h2>
+    <p>Prices in Turkish lira. Oat milk is free, always.</p>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-col menu-col-teal">
+      <h3>Sand coffee</h3>
+      <ul>
+        <li><span>Türk kahvesi, sade</span><b>140</b></li>
+        <li><span>Türk kahvesi, orta or şekerli</span><b>140</b></li>
+        <li><span>With mastic (damla sakızlı)</span><b>160</b></li>
+        <li><span>Dibek, stone-ground</span><b>160</b></li>
+        <li><span>Menengiç, no caffeine</span><b>170</b></li>
+      </ul>
+    </div>
+    <div class="menu-col">
+      <h3>Espresso bar</h3>
+      <ul>
+        <li><span>Espresso</span><b>110</b></li>
+        <li><span>Cortado</span><b>140</b></li>
+        <li><span>Flat white</span><b>165</b></li>
+        <li><span>Latte</span><b>170</b></li>
+      </ul>
+    </div>
+    <div class="menu-col">
+      <h3>Filter</h3>
+      <ul>
+        <li><span>V60, bean of the week</span><b>175</b></li>
+        <li><span>Cold brew</span><b>180</b></li>
+      </ul>
+    </div>
+    <div class="menu-col menu-col-pink">
+      <h3>Something sweet</h3>
+      <ul>
+        <li><span>Lokum plate</span><b>90</b></li>
+        <li><span>Pistachio baklava, 3 pieces</span><b>260</b></li>
+        <li><span>San Sebastián cheesecake</span><b>210</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="book" id="book" aria-labelledby="book-title">
+  <div class="book-panel">
+    <div class="book-copy">
+      <h2 id="book-title">Book a table</h2>
+      <p>Window tables go first on weekends. Send a request and we confirm on WhatsApp within an hour.</p>
+    </div>
+    <form class="book-form" id="bookForm">
+      <label>Date<input type="date" name="date" required></label>
+      <label>Time
+        <select name="time">
+          <option>09:00</option><option>11:00</option><option>13:00</option><option selected>15:00</option><option>17:00</option><option>19:00</option><option>21:00</option>
+        </select>
+      </label>
+      <label>Guests
+        <select name="guests"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>8</option></select>
+      </label>
+      <label>Name<input type="text" name="name" autocomplete="given-name" required></label>
+      <button class="btn btn-teal" type="submit">Send booking request</button>
+      <p class="book-done" id="bookDone" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<section class="visit wrap" id="visit" aria-labelledby="visit-title">
+  <h2 id="visit-title">Visit</h2>
+  <div class="visit-grid">
+    <div>
+      <h3>Where</h3>
+      <p>Moda Caddesi, Kadıköy, Istanbul. Five minutes from the Kadıköy ferry pier.</p>
+    </div>
+    <div>
+      <h3>When</h3>
+      <p>Every day, 8:00–23:00. The roaster is on Tuesdays, so the café smells best then.</p>
+    </div>
+    <div>
+      <h3>At home</h3>
+      <p>Delivery through Yemeksepeti and Getir. Beans to take away, 250&nbsp;g or 1&nbsp;kg.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="foot wrap">
+  <p>Kum &amp; Cezve is a demo website concept by <a href="https://token1267.github.io/">Tolybay Uakhit</a>. The café, address and prices are made up.</p>
+</footer>
+
+<script type="module" src="scene.js"></script>
+<script>
+  document.getElementById('bookForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    document.getElementById('bookDone').textContent =
+      `Thanks, ${f.get('name')}! On a real site this opens the café's WhatsApp with your request already typed: ${f.get('guests')} guests, ${f.get('date')} at ${f.get('time')}.`;
+  });
+</script>
+</body>
+</html>

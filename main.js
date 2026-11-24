@@ -1,16 +1,17 @@
 (() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
 
-  // The hotel video plays only while it is on screen
-  const video = document.getElementById('hotelVideo');
-  if (video && !reduce) {
-    new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        if (video.preload === 'none') video.preload = 'auto';
-        video.play().catch(() => {});
+  // Project videos play only while they are on screen
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(({ target: v, isIntersecting }) => {
+      if (isIntersecting) {
+        if (v.preload === 'none') v.preload = 'auto';
+        v.play().catch(() => {});
       } else {
-        video.pause();
+        v.pause();
       }
-    }, { threshold: 0.3 }).observe(video);
-  }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('video.autoplay').forEach((v) => io.observe(v));
 })();

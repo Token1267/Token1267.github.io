@@ -149,6 +149,7 @@ h1 {
   margin-top: 16px;
   overflow: hidden;
 }
+.case-sand { background: #EFD6A6; }
 .case-sage { background: var(--sage); }
 .case-sky { background: var(--sky); }
 .case-navy { background: var(--navy); color: #fff; }
