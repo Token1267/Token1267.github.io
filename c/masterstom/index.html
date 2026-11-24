@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MASTER STOM 24/7 — концепт сайта</title>
+<meta name="description" content="Концепт сайта для стоматологии MASTER STOM 24/7 в Шымкенте: цены, запись онлайн, русский и казахский.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2FD4A8">
+<meta property="og:title" content="MASTER STOM 24/7 — концепт сайта">
+<meta property="og:description" content="Сайт для вашей стоматологии: живой 3D-зуб, цены, онлайн-запись. Русский и казахский.">
+<meta property="og:image" content="https://token1267.github.io/c/masterstom/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../work/kulki/style.css">
+<style>
+  .logo { font-size: clamp(1.2rem, 2vw, 1.6rem); }
+  .svc-grid { margin-top: clamp(28px, 4vw, 48px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .svc { background: var(--white); border-radius: 26px; padding: 26px 24px 28px; }
+  .svc h3 { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
+  .svc p { margin-top: 10px; color: var(--muted); }
+  .svc::before { content: ""; display: block; width: 44px; height: 44px; border-radius: 50%; background: var(--mint); margin-bottom: 18px; }
+  .svc:nth-child(3n+2)::before { background: var(--ink); }
+  .svc:nth-child(3n)::before { background: var(--pink); }
+  .rating { margin-top: clamp(28px, 4vw, 48px); background: var(--mint-soft); border-radius: 26px; padding: clamp(28px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; }
+  .rating b { font-size: clamp(3.5rem, 8vw, 6rem); font-weight: 900; letter-spacing: -0.05em; line-height: 1; }
+  .rating p { font-size: 1.2rem; max-width: 22em; }
+  .note-price { display: inline-block; margin-top: 12px; background: #FFF3C4; border-radius: 10px; padding: 6px 12px; font-weight: 600; font-size: .95rem; }
+  @media (max-width: 960px) { .svc-grid { grid-template-columns: 1fr; } }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<p class="demo-bar" data-i18n="demo">Концепт сайта для MASTER STOM 24/7. Сделал <a href="https://token1267.github.io/">Tolybay Uakhit</a> без заказа, чтобы показать идею. Цены примерные.</p>
+
+<section class="hero">
+  <div class="panel">
+    <header class="top">
+      <a class="logo" href="#">MASTER STOM 24/7<span>.</span></a>
+      <nav aria-label="Меню">
+        <a href="#prices" data-i18n="navPrices">Цены</a>
+        <a href="#doctors" data-i18n="navServices">Услуги</a>
+        <a href="#contacts" data-i18n="navContacts">Контакты</a>
+        <div class="lang" role="group" aria-label="Язык">
+          <button type="button" data-lang="ru" aria-pressed="true">Рус</button>
+          <button type="button" data-lang="kk" aria-pressed="false">Қаз</button>
+        </div>
+        <a class="nav-cta" href="#book" data-i18n="navBook">Записаться</a>
+      </nav>
+    </header>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 data-i18n="h1">Лечим зубы без страха и сюрпризов в смете.</h1>
+        <p class="lead" data-i18n="lead">Круглосуточная стоматология на улице Казыбек би. Неотложная помощь взрослым и детям, бесплатная консультация, детские врачи.</p>
+        <div class="actions">
+          <a class="btn btn-ink" href="#book" data-i18n="ctaBook">Записаться онлайн</a>
+          <a class="btn btn-line" href="#prices" data-i18n="ctaPrices">Смотреть цены</a>
+        </div>
+        <ul class="facts">
+          <li><b>5,0</b> <span data-i18n="fact1">в 2ГИС, 145 отзывов</span></li>
+          <li><b>24/7</b> <span data-i18n="fact2">без выходных</span></li>
+          <li><b>0 ₸</b> <span data-i18n="fact3">консультация</span></li>
+        </ul>
+      </div>
+      <div class="tooth-stage" id="toothStage" tabindex="0" role="button" aria-label="3D-модель зуба. Нажмите, чтобы увидеть имплант">
+        <canvas id="tooth" aria-hidden="true"></canvas>
+        <div class="implant-tag" id="implantTag" aria-hidden="true">
+          <b data-i18n="implantName">Имплантация</b>
+          <span data-i18n="implantPrice">ваша цена</span>
+        </div>
+        <p class="tooth-hint" data-i18n="toothHint">Наведите или нажмите на зуб</p>
+        <img class="tooth-fallback" src="../../work/kulki/og.jpg" width="1200" height="630" loading="lazy" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="prices wrap" id="prices" aria-labelledby="prices-title">
+  <div class="head">
+    <h2 id="prices-title" data-i18n="pricesTitle">Цены</h2>
+    <div>
+      <p data-i18n="pricesSub">Цена на сайте равна цене в смете — пациенты это ценят больше всего.</p>
+      <span class="note-price" data-i18n="pricesNote">Пока цены примерные: пришлите свой прайс, поставим за день.</span>
+    </div>
+  </div>
+  <ul class="price-list">
+    <li class="free"><span data-i18n="p1">Консультация и план лечения</span><b>0 ₸</b></li>
+    <li><span data-i18n="p2">Лечение кариеса</span><b data-i18n="p2v">от 18 000 ₸</b></li>
+    <li><span data-i18n="p3">Профессиональная чистка</span><b>22 000 ₸</b></li>
+    <li><span data-i18n="p4">Удаление зуба</span><b data-i18n="p4v">от 12 000 ₸</b></li>
+    <li><span data-i18n="p5">Циркониевая коронка</span><b>75 000 ₸</b></li>
+    <li class="star"><span data-i18n="p6">Имплант под ключ</span><b data-i18n="p6v">от 180 000 ₸</b></li>
+  </ul>
+</section>
+
+<section class="doctors wrap" id="doctors" aria-labelledby="svc-title">
+  <h2 id="svc-title" data-i18n="svcTitle">Услуги</h2>
+  <div class="svc-grid">
+    <article class="svc"><h3 data-i18n="sv1t">Неотложная помощь</h3><p data-i18n="sv1d">Острая боль — примем без записи, в том числе детей.</p></article>
+    <article class="svc"><h3 data-i18n="sv2t">Бесплатная консультация</h3><p data-i18n="sv2d">Осмотр и план лечения без оплаты.</p></article>
+    <article class="svc"><h3 data-i18n="sv3t">Детская стоматология</h3><p data-i18n="sv3d">Отдельные детские врачи: лечение, ортодонтия, хирургия.</p></article>
+    <article class="svc"><h3 data-i18n="sv4t">Имплантация</h3><p data-i18n="sv4d">Импланты с коронкой под ключ. План и цена — на первом приёме.</p></article>
+    <article class="svc"><h3 data-i18n="sv5t">Ортодонтия</h3><p data-i18n="sv5d">Брекеты и элайнеры для взрослых и детей.</p></article>
+    <article class="svc"><h3 data-i18n="sv6t">Пародонтология</h3><p data-i18n="sv6d">Лечение дёсен и профессиональная чистка.</p></article>
+  </div>
+</section>
+
+<section class="book" id="book" aria-labelledby="book-title">
+  <div class="book-panel">
+    <div class="book-copy">
+      <h2 id="book-title" data-i18n="bookTitle">Запись онлайн</h2>
+      <p data-i18n="bookSub">Пациент выбирает услугу, день и время — заявка сразу приходит вам в WhatsApp.</p>
+    </div>
+    <form class="book-form" id="bookForm">
+      <label><span data-i18n="fService">Услуга</span>
+        <select name="service" id="service">
+          <option data-i18n="s1">Консультация</option>
+          <option data-i18n="s2">Лечение</option>
+          <option data-i18n="s3">Чистка</option>
+          <option data-i18n="s4">Имплантация</option>
+          <option data-i18n="s5">Детский приём</option>
+        </select>
+      </label>
+      <fieldset><legend data-i18n="fDay">День</legend><div class="chips" id="days"></div></fieldset>
+      <fieldset><legend data-i18n="fTime">Время</legend><div class="chips" id="times"></div></fieldset>
+      <div class="two">
+        <label><span data-i18n="fName">Имя</span><input type="text" name="name" autocomplete="given-name" required></label>
+        <label><span data-i18n="fPhone">Телефон</span><input type="tel" name="phone" inputmode="tel" autocomplete="tel" placeholder="+7 7__ ___ __ __" required></label>
+      </div>
+      <button class="btn btn-ink" type="submit" data-i18n="fSubmit">Записаться</button>
+      <p class="book-done" id="bookDone" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<section class="reviews wrap" aria-labelledby="rev-title">
+  <h2 id="rev-title" data-i18n="revTitle">Отзывы</h2>
+  <div class="rating">
+    <b>5,0</b>
+    <p data-i18n="revText">Средняя оценка в 2ГИС, 145 отзывов. На сайте отзывы подтягиваются из 2ГИС, пациенту не нужно искать.</p>
+    <a class="btn btn-ink" href="https://2gis.kz/shymkent/firm/70000001057702501/tab/reviews" data-i18n="revBtn">Читать отзывы в 2ГИС</a>
+  </div>
+</section>
+
+<section class="contacts wrap" id="contacts" aria-labelledby="ct-title">
+  <h2 id="ct-title" data-i18n="ctTitle">Контакты</h2>
+  <div class="ct-grid">
+    <div><h3 data-i18n="ctWhere">Адрес</h3><p data-i18n="ctAddr">улица Казыбек би, 46, Шымкент</p></div>
+    <div><h3 data-i18n="ctWhen">Часы</h3><p data-i18n="ctHours">Круглосуточно</p></div>
+    <div class="ct-actions">
+      <a class="btn btn-mint" href="https://2gis.kz/shymkent/firm/70000001057702501" data-i18n="ct2gis">Открыть в 2ГИС</a>
+      <a class="btn btn-line-ink" href="https://wa.me/77007117294" data-i18n="ctWa">Написать в WhatsApp</a>
+
+    </div>
+  </div>
+</section>
+
+<footer class="foot wrap">
+  <p data-i18n="foot">Это концепт сайта для MASTER STOM 24/7: его сделал <a href="https://token1267.github.io/">Tolybay Uakhit</a> без заказа, чтобы показать, как может выглядеть ваш сайт. Название, адрес и рейтинг взяты из 2ГИС, цены примерные.</p>
+</footer>
+
+<script type="module" src="../../work/kulki/scene.js"></script>
+<script src="app.js" defer></script>
+</body>
+</html>
