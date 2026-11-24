@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Стоматология «Күлкі», Шымкент (демо)</title>
+<meta name="description" content="Демо-сайт стоматологии: цены, врачи, онлайн-запись, отзывы. Русский и казахский. Автор — Tolybay Uakhit.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2FD4A8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232FD4A8'/%3E%3Cpath d='M9 10c0-3 4-3 7-1.5C19 7 23 7 23 10c0 4-2 5-2 9 0 3-1.5 5-2.5 5S17 21 16 21s-1.5 3-2.5 3S11 22 11 19c0-4-2-5-2-9z' fill='%23fff'/%3E%3C/svg%3E">
+<meta property="og:title" content="Стоматология «Күлкі», Шымкент (демо)">
+<meta property="og:image" content="https://token1267.github.io/work/kulki/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<p class="demo-bar" data-i18n="demo">Демо-сайт от <a href="https://token1267.github.io/">Tolybay Uakhit</a>. Клиника, адрес, врачи и цены выдуманы.</p>
+
+<section class="hero">
+  <div class="panel">
+    <header class="top">
+      <a class="logo" href="#">Күлкі<span>.</span></a>
+      <nav aria-label="Меню">
+        <a href="#prices" data-i18n="navPrices">Цены</a>
+        <a href="#doctors" data-i18n="navDoctors">Врачи</a>
+        <a href="#contacts" data-i18n="navContacts">Контакты</a>
+        <div class="lang" role="group" aria-label="Язык">
+          <button type="button" data-lang="ru" aria-pressed="true">Рус</button>
+          <button type="button" data-lang="kk" aria-pressed="false">Қаз</button>
+        </div>
+        <a class="nav-cta" href="#book" data-i18n="navBook">Записаться</a>
+      </nav>
+    </header>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 data-i18n="h1">Лечим зубы без страха и сюрпризов в смете.</h1>
+        <p class="lead" data-i18n="lead">Стоматология в Шымкенте: цены на сайте, план лечения и смета на первом приёме, детский врач по субботам.</p>
+        <div class="actions">
+          <a class="btn btn-ink" href="#book" data-i18n="ctaBook">Записаться онлайн</a>
+          <a class="btn btn-line" href="#prices" data-i18n="ctaPrices">Смотреть цены</a>
+        </div>
+        <ul class="facts">
+          <li><b>4,9</b> <span data-i18n="fact1">в 2ГИС, 312 отзывов</span></li>
+          <li><b>9–21</b> <span data-i18n="fact2">без выходных</span></li>
+          <li><b>0–0–12</b> <span data-i18n="fact3">рассрочка Kaspi</span></li>
+        </ul>
+      </div>
+      <div class="tooth-stage" id="toothStage" tabindex="0" role="button" aria-label="3D-модель зуба. Нажмите, чтобы увидеть имплант" data-i18n-aria="toothAria">
+        <canvas id="tooth" aria-hidden="true"></canvas>
+        <div class="implant-tag" id="implantTag" aria-hidden="true">
+          <b data-i18n="implantName">Имплант под ключ</b>
+          <span data-i18n="implantPrice">от 180 000 ₸</span>
+        </div>
+        <p class="tooth-hint" data-i18n="toothHint">Наведите или нажмите на зуб</p>
+        <img class="tooth-fallback" src="og.jpg" width="1200" height="630" loading="lazy" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="prices wrap" id="prices" aria-labelledby="prices-title">
+  <div class="head">
+    <h2 id="prices-title" data-i18n="pricesTitle">Цены</h2>
+    <p data-i18n="pricesSub">Цена на сайте равна цене в смете. Если план лечения меняется, сначала говорим вам.</p>
+  </div>
+  <ul class="price-list">
+    <li class="free"><span data-i18n="p1">Консультация, снимок и план лечения</span><b>0 ₸</b></li>
+    <li><span data-i18n="p2">Лечение кариеса</span><b data-i18n="p2v">от 18 000 ₸</b></li>
+    <li><span data-i18n="p3">Профессиональная чистка</span><b>22 000 ₸</b></li>
+    <li><span data-i18n="p4">Удаление зуба</span><b data-i18n="p4v">от 12 000 ₸</b></li>
+    <li><span data-i18n="p5">Циркониевая коронка</span><b>75 000 ₸</b></li>
+    <li class="star"><span data-i18n="p6">Имплант Osstem под ключ</span><b data-i18n="p6v">от 180 000 ₸</b></li>
+    <li><span data-i18n="p7">Отбеливание ZOOM</span><b>60 000 ₸</b></li>
+    <li><span data-i18n="p8">Детский приём</span><b>8 000 ₸</b></li>
+  </ul>
+</section>
+
+<section class="doctors wrap" id="doctors" aria-labelledby="doctors-title">
+  <h2 id="doctors-title" data-i18n="docTitle">Врачи</h2>
+  <div class="doc-grid">
+    <article class="doc"><div class="ava ava-1">АС</div><h3>Айгерим Сапарова</h3><p class="role" data-i18n="d1r">Терапевт, 9 лет опыта</p><p data-i18n="d1q">«Лечу каналы под микроскопом и объясняю каждый шаг до того, как начать.»</p></article>
+    <article class="doc"><div class="ava ava-2">НЖ</div><h3 data-i18n="d2n">Нурлан Жумабеков</h3><p class="role" data-i18n="d2r">Хирург-имплантолог, 12 лет</p><p data-i18n="d2q">«Ставлю импланты с 2014 года, больше полутора тысяч.»</p></article>
+    <article class="doc"><div class="ava ava-3">ДК</div><h3>Дина Ким</h3><p class="role" data-i18n="d3r">Детский стоматолог</p><p data-i18n="d3q">«Первый визит — знакомство: смотрим, играем, ничего не лечим.»</p></article>
+  </div>
+</section>
+
+<section class="book" id="book" aria-labelledby="book-title">
+  <div class="book-panel">
+    <div class="book-copy">
+      <h2 id="book-title" data-i18n="bookTitle">Запись онлайн</h2>
+      <p data-i18n="bookSub">Выберите услугу, день и время. Администратор подтвердит в WhatsApp за 15 минут.</p>
+    </div>
+    <form class="book-form" id="bookForm">
+      <label><span data-i18n="fService">Услуга</span>
+        <select name="service" id="service">
+          <option data-i18n="s1">Консультация</option>
+          <option data-i18n="s2">Лечение</option>
+          <option data-i18n="s3">Чистка</option>
+          <option data-i18n="s4">Имплантация</option>
+          <option data-i18n="s5">Детский приём</option>
+        </select>
+      </label>
+      <fieldset><legend data-i18n="fDay">День</legend><div class="chips" id="days"></div></fieldset>
+      <fieldset><legend data-i18n="fTime">Время</legend><div class="chips" id="times"></div></fieldset>
+      <div class="two">
+        <label><span data-i18n="fName">Имя</span><input type="text" name="name" autocomplete="given-name" required></label>
+        <label><span data-i18n="fPhone">Телефон</span><input type="tel" name="phone" inputmode="tel" autocomplete="tel" placeholder="+7 7__ ___ __ __" required></label>
+      </div>
+      <button class="btn btn-ink" type="submit" data-i18n="fSubmit">Записаться</button>
+      <p class="book-done" id="bookDone" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<section class="reviews wrap" aria-labelledby="rev-title">
+  <h2 id="rev-title" data-i18n="revTitle">Отзывы из 2ГИС</h2>
+  <div class="rev-grid">
+    <blockquote><p data-i18n="r1">«Боялась идти после плохого опыта. Айгерим показала всё на снимке и назвала цену до начала. Вылечили два зуба за один визит.»</p><cite data-i18n="r1a">Гульнара</cite></blockquote>
+    <blockquote><p data-i18n="r2">«Ставил имплант. Цена совпала с сайтом до тенге, рассрочку через Kaspi оформили за пять минут.»</p><cite>Ерлан</cite></blockquote>
+    <blockquote><p data-i18n="r3">«Сын в пять лет сам попросился прийти ещё раз. Для нас это чудо.»</p><cite>Мадина</cite></blockquote>
+  </div>
+</section>
+
+<section class="contacts wrap" id="contacts" aria-labelledby="ct-title">
+  <h2 id="ct-title" data-i18n="ctTitle">Контакты</h2>
+  <div class="ct-grid">
+    <div><h3 data-i18n="ctWhere">Адрес</h3><p data-i18n="ctAddr">ул. Байтурсынова, 50, Шымкент (демо-адрес)</p></div>
+    <div><h3 data-i18n="ctWhen">Часы</h3><p data-i18n="ctHours">Каждый день, 9:00–21:00</p></div>
+    <div class="ct-actions">
+      <a class="btn btn-mint" href="#" data-i18n="ct2gis">Открыть в 2ГИС</a>
+      <a class="btn btn-line-ink" href="#" data-i18n="ctWa">Написать в WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot wrap">
+  <p data-i18n="foot">«Күлкі» — демо-сайт от <a href="https://token1267.github.io/">Tolybay Uakhit</a>. Клиника, адрес, врачи, отзывы и цены выдуманы.</p>
+</footer>
+
+<script type="module" src="scene.js"></script>
+<script src="app.js" defer></script>
+</body>
+</html>

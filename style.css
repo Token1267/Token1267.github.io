@@ -150,6 +150,8 @@ h1 {
   overflow: hidden;
 }
 .case-sand { background: #EFD6A6; }
+.case-mint { background: #CFF3E6; }
+.case-mint .browser { transform: rotate(1.2deg); }
 .case-sage { background: var(--sage); }
 .case-sky { background: var(--sky); }
 .case-navy { background: var(--navy); color: #fff; }
